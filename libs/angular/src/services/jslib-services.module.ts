@@ -1246,7 +1246,7 @@ const safeProviders: SafeProvider[] = [
   safeProvider({
     provide: DomainSettingsService,
     useClass: DefaultDomainSettingsService,
-    deps: [StateProvider],
+    deps: [StateProvider, ConfigService],
   }),
   safeProvider({
     provide: BiometricStateService,
