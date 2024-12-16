@@ -44,7 +44,7 @@ export class AutofillVaultListItemsComponent implements OnInit {
   /**
    * Indicators for the section.
    */
-  @Input() sectionIndicators: string[];
+  @Input() sectionIndicators: string[] = [];
 
   /**
    * Observable that determines whether the empty autofill tip should be shown.

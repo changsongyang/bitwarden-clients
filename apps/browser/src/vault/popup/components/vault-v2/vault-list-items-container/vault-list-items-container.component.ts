@@ -103,7 +103,7 @@ export class VaultListItemsContainerComponent implements AfterViewInit {
   /**
    * Indicators for the section.
    */
-  @Input() sectionIndicators: string[];
+  @Input() sectionIndicators: string[] = [];
 
   /**
    * Optional description for the vault list item section. Will be shown below the title even when

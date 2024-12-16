@@ -464,6 +464,11 @@ const safeProviders: SafeProvider[] = [
     deps: [ApiServiceAbstraction, FileUploadServiceAbstraction],
   }),
   safeProvider({
+    provide: DomainSettingsService,
+    useClass: DefaultDomainSettingsService,
+    deps: [StateProvider, ConfigService],
+  }),
+  safeProvider({
     provide: CipherServiceAbstraction,
     useFactory: (
       keyService: KeyServiceAbstraction,
@@ -1242,11 +1247,6 @@ const safeProviders: SafeProvider[] = [
     provide: BadgeSettingsServiceAbstraction,
     useClass: BadgeSettingsService,
     deps: [StateProvider],
-  }),
-  safeProvider({
-    provide: DomainSettingsService,
-    useClass: DefaultDomainSettingsService,
-    deps: [StateProvider, ConfigService],
   }),
   safeProvider({
     provide: BiometricStateService,
