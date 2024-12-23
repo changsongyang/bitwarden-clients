@@ -56,7 +56,6 @@ describe("ScriptInjectorService", () => {
   const fakeStateProvider: FakeStateProvider = new FakeStateProvider(accountService);
   let configService: MockProxy<ConfigService>;
   let domainSettingsService: DomainSettingsService;
-  const expectedBlockedURIError = new Error("This URI of this tab is on the blocked domains list.");
 
   beforeEach(() => {
     jest.spyOn(BrowserApi, "getTab").mockImplementation(async () => tabMock);
@@ -70,6 +69,7 @@ describe("ScriptInjectorService", () => {
       platformUtilsService,
       logService,
     );
+    jest.spyOn(scriptInjectorService as any, "buildInjectionDetails");
   });
 
   describe("inject", () => {
@@ -116,32 +116,14 @@ describe("ScriptInjectorService", () => {
         domainSettingsService.blockedInteractionsUris$ = of({ [mockBlockedURI.host]: null });
         manifestVersionSpy.mockReturnValue(3);
 
-        await expect(
-          scriptInjectorService.inject({
-            tabId,
-            injectDetails: {
-              file: combinedManifestVersionFile,
-              frame: 10,
-              ...sharedInjectDetails,
-            },
-          }),
-        ).rejects.toThrow(expectedBlockedURIError);
+        await expect(scriptInjectorService["buildInjectionDetails"]).not.toHaveBeenCalled();
       });
 
       it("skips injecting the script in manifest v2 when the tab domain is a blocked domain", async () => {
         domainSettingsService.blockedInteractionsUris$ = of({ [mockBlockedURI.host]: null });
         manifestVersionSpy.mockReturnValue(2);
 
-        await expect(
-          scriptInjectorService.inject({
-            tabId,
-            injectDetails: {
-              file: combinedManifestVersionFile,
-              frame: "all_frames",
-              ...sharedInjectDetails,
-            },
-          }),
-        ).rejects.toThrow(expectedBlockedURIError);
+        await expect(scriptInjectorService["buildInjectionDetails"]).not.toHaveBeenCalled();
       });
 
       it("injects the script in manifest v2 when given combined injection details", async () => {

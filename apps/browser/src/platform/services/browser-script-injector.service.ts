@@ -54,7 +54,10 @@ export class BrowserScriptInjectorService extends ScriptInjectorService {
     }
 
     if (!injectionAllowedInTab) {
-      throw new Error("This URI of this tab is on the blocked domains list.");
+      this.logService.warning(
+        `${injectDetails.file} was not injected because ${tabURL?.hostname || "the tab URI"} is on the user's blocked domains list.`,
+      );
+      return;
     }
 
     const injectionDetails = this.buildInjectionDetails(injectDetails, file);
