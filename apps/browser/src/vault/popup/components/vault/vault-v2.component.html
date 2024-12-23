@@ -26,6 +26,7 @@
     *ngIf="vaultState !== VaultStateEnum.Empty && showScriptInjectionIsBlockedBanner"
     id="domain-script-injection-blocked-banner"
     bannerType="info"
+    slot="full-width-notice"
     (onClose)="handleScriptInjectionIsBlockedBannerDismiss()"
   >
     {{ "autofillBlockedNotice" | i18n }}
