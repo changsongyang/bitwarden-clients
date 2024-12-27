@@ -1,6 +1,6 @@
 // FIXME: Update this file to be type safe and remove this and next line
 // @ts-strict-ignore
-import { BehaviorSubject, filter, firstValueFrom, timeout } from "rxjs";
+import { BehaviorSubject, filter, firstValueFrom, timeout, Observable } from "rxjs";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { VaultTimeoutSettingsService } from "@bitwarden/common/abstractions/vault-timeout/vault-timeout-settings.service";
@@ -49,9 +49,14 @@ import {
   WebAuthnLoginCredentials,
 } from "../models/domain/login-credentials";
 import { UserDecryptionOptions } from "../models/domain/user-decryption-options";
+import { IdentityDeviceVerificationResponse } from "../models/response/identity-device-verification.response";
 import { CacheData } from "../services/login-strategies/login-strategy.state";
 
-type IdentityResponse = IdentityTokenResponse | IdentityTwoFactorResponse | IdentityCaptchaResponse;
+type IdentityResponse =
+  | IdentityTokenResponse
+  | IdentityTwoFactorResponse
+  | IdentityCaptchaResponse
+  | IdentityDeviceVerificationResponse;
 
 export abstract class LoginStrategyData {
   tokenRequest:
@@ -67,6 +72,8 @@ export abstract class LoginStrategyData {
 
 export abstract class LoginStrategy {
   protected abstract cache: BehaviorSubject<LoginStrategyData>;
+  protected sessionTimeoutSubject = new BehaviorSubject<boolean>(false);
+  sessionTimeout$: Observable<boolean> = this.sessionTimeoutSubject.asObservable();
 
   constructor(
     protected accountService: AccountService,
@@ -119,6 +126,8 @@ export abstract class LoginStrategy {
       return [await this.processTwoFactorResponse(response), response];
     } else if (response instanceof IdentityCaptchaResponse) {
       return [await this.processCaptchaResponse(response), response];
+    } else if (response instanceof IdentityDeviceVerificationResponse) {
+      return [await this.processDeviceVerificationResponse(response), response];
     } else if (response instanceof IdentityTokenResponse) {
       return [await this.processTokenResponse(response), response];
     }
@@ -354,5 +363,17 @@ export abstract class LoginStrategy {
         }),
       ),
     );
+  }
+
+  protected async processDeviceVerificationResponse(
+    response: IdentityDeviceVerificationResponse,
+  ): Promise<AuthResult> {
+    const result = new AuthResult();
+    result.requiresDeviceVerification = true;
+    return result;
+  }
+
+  protected onSessionTimeout() {
+    this.sessionTimeoutSubject.next(true);
   }
 }
