@@ -1,0 +1,38 @@
+<form [formGroup]="formGroup" (ngSubmit)="submit()">
+  <div class="tw-mb-6">
+    <p class="mb-0">
+      <span class="tw-ml-2 tw-text-success" role="alert" *ngIf="sentCode">
+        <i class="bwi bwi-check-circle" aria-hidden="true"></i>
+        {{ "codeSent" | i18n }}
+      </span>
+    </p>
+  </div>
+
+  <bit-form-field>
+    <bit-label>{{ "verificationCode" | i18n }}</bit-label>
+    <input
+      bitInput
+      type="text"
+      id="verificationCode"
+      name="verificationCode"
+      formControlName="code"
+      appInputVerbatim
+    />
+  </bit-form-field>
+
+  <button bitLink type="button" linkType="primary" (click)="requestOTP()" class="">
+    {{ "resendCode" | i18n }}
+  </button>
+
+  <div class="tw-flex tw-mt-4">
+    <button
+      bitButton
+      buttonType="primary"
+      type="submit"
+      [block]="true"
+      [disabled]="formGroup.invalid"
+    >
+      {{ "continueLoggingIn" | i18n }}
+    </button>
+  </div>
+</form>

@@ -370,6 +370,10 @@ export abstract class LoginStrategy {
   ): Promise<AuthResult> {
     const result = new AuthResult();
     result.requiresDeviceVerification = true;
+
+    // TODO: remove
+    // console.log("processDeviceVerificationResponse");
+    // console.log(response);
     return result;
   }
 

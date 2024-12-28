@@ -38,6 +38,8 @@ import {
   DevicesIcon,
   SsoComponent,
   TwoFactorTimeoutIcon,
+  NewDeviceVerificationComponent,
+  DeviceVerificationIcon,
 } from "@bitwarden/auth/angular";
 import { FeatureFlag } from "@bitwarden/common/enums/feature-flag.enum";
 import {
@@ -110,6 +112,21 @@ const routes: Routes = [
       pageIcon: TwoFactorTimeoutIcon,
       pageTitle: {
         key: "authenticationTimeout",
+      },
+    } satisfies RouteDataProperties & AnonLayoutWrapperData,
+  },
+  {
+    path: "device-verification",
+    component: AnonLayoutWrapperComponent,
+    canActivate: [unauthGuardFn()],
+    children: [{ path: "", component: NewDeviceVerificationComponent }],
+    data: {
+      pageIcon: DeviceVerificationIcon,
+      pageTitle: {
+        key: "verifyIdentity",
+      },
+      pageSubtitle: {
+        key: "weDontRecognizeThisDevice",
       },
     } satisfies RouteDataProperties & AnonLayoutWrapperData,
   },

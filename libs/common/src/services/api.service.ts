@@ -238,6 +238,13 @@ export class ApiService implements ApiServiceAbstraction {
     }
 
     if (responseJson != null) {
+      // TODO: remove
+      // console.log(responseJson);
+      // TEMPORARY: Force device verification for testing
+      return new IdentityDeviceVerificationResponse({
+        DeviceVerified: false,
+      });
+
       if (response.status === 200) {
         return new IdentityTokenResponse(responseJson);
       } else if (

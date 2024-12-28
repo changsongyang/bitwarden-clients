@@ -105,6 +105,10 @@ export class PasswordLoginStrategy extends LoginStrategy {
 
     const [authResult, identityResponse] = await this.startLogIn();
 
+    // console.log("after startLogin");
+    // console.log(authResult);
+    // console.log(identityResponse);
+
     if (identityResponse instanceof IdentityCaptchaResponse) {
       return authResult;
     }
