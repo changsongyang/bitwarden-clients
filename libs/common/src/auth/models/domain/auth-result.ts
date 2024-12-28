@@ -22,6 +22,7 @@ export class AuthResult {
   ssoEmail2FaSessionToken?: string;
   email: string;
   requiresEncryptionKeyMigration: boolean;
+  requiresDeviceVerification = false;
 
   get requiresCaptcha() {
     return !Utils.isNullOrWhitespace(this.captchaSiteKey);
