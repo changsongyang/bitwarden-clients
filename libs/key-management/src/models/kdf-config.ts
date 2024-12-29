@@ -16,6 +16,8 @@ export class PBKDF2KdfConfig {
   static PRELOGIN_ITERATIONS_MIN = 5000;
   kdfType: KdfType.PBKDF2_SHA256 = KdfType.PBKDF2_SHA256;
   iterations: number;
+  memory: number = undefined;
+  parallelism: number = undefined;
 
   constructor(iterations?: number) {
     this.iterations = iterations ?? PBKDF2KdfConfig.ITERATIONS.defaultValue;
@@ -125,4 +127,8 @@ export class Argon2KdfConfig {
   }
 }
 
-export const DEFAULT_KDF_CONFIG = new PBKDF2KdfConfig(PBKDF2KdfConfig.ITERATIONS.defaultValue);
+export const DEFAULT_KDF_CONFIG = new Argon2KdfConfig(
+  Argon2KdfConfig.ITERATIONS.defaultValue,
+  Argon2KdfConfig.MEMORY.defaultValue,
+  Argon2KdfConfig.PARALLELISM.defaultValue,
+);
