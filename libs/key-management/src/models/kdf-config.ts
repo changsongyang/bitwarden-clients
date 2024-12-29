@@ -16,8 +16,6 @@ export class PBKDF2KdfConfig {
   static PRELOGIN_ITERATIONS_MIN = 5000;
   kdfType: KdfType.PBKDF2_SHA256 = KdfType.PBKDF2_SHA256;
   iterations: number;
-  memory: number;
-  parallelism: number;
 
   constructor(iterations?: number) {
     this.iterations = iterations ?? PBKDF2KdfConfig.ITERATIONS.defaultValue;
@@ -45,6 +43,14 @@ export class PBKDF2KdfConfig {
         `PBKDF2 iterations must be at least ${PBKDF2KdfConfig.PRELOGIN_ITERATIONS_MIN}, but was ${this.iterations}; possible pre-login downgrade attack detected.`,
       );
     }
+  }
+
+  get memory(): number | undefined {
+    return undefined;
+  }
+
+  get parallelism(): number | undefined {
+    return undefined;
   }
 
   static fromJSON(json: Jsonify<PBKDF2KdfConfig>): PBKDF2KdfConfig {
