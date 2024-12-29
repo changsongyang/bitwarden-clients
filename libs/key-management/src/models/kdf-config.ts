@@ -16,8 +16,8 @@ export class PBKDF2KdfConfig {
   static PRELOGIN_ITERATIONS_MIN = 5000;
   kdfType: KdfType.PBKDF2_SHA256 = KdfType.PBKDF2_SHA256;
   iterations: number;
-  memory: number = undefined;
-  parallelism: number = undefined;
+  memory: number;
+  parallelism: number;
 
   constructor(iterations?: number) {
     this.iterations = iterations ?? PBKDF2KdfConfig.ITERATIONS.defaultValue;
