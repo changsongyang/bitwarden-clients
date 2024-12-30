@@ -919,7 +919,7 @@ const safeProviders: SafeProvider[] = [
     deps: [
       CipherServiceAbstraction,
       StateProvider,
-      OrganizationServiceAbstraction,
+      vNextOrganizationServiceAbstraction,
       EventUploadServiceAbstraction,
       AuthServiceAbstraction,
       AccountServiceAbstraction,
