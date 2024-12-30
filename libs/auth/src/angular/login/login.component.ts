@@ -339,7 +339,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     const passwordStrength = this.passwordStrengthService.getPasswordStrength(
       masterPassword,
-      this.formGroup.value.email,
+      this.formGroup.value.email ?? undefined,
     )?.score;
 
     return !this.policyService.evaluateMasterPassword(
