@@ -53,6 +53,10 @@ import {
   InternalOrganizationServiceAbstraction,
   OrganizationService as OrganizationServiceAbstraction,
 } from "@bitwarden/common/admin-console/abstractions/organization/organization.service.abstraction";
+import {
+  vNextInternalOrganizationServiceAbstraction,
+  vNextOrganizationService as vNextOrganizationServiceAbstraction,
+} from "@bitwarden/common/admin-console/abstractions/organization/vnext.organization.service.abstraction";
 import { OrgDomainApiServiceAbstraction } from "@bitwarden/common/admin-console/abstractions/organization-domain/org-domain-api.service.abstraction";
 import {
   OrgDomainInternalServiceAbstraction,
@@ -66,6 +70,7 @@ import {
 } from "@bitwarden/common/admin-console/abstractions/policy/policy.service.abstraction";
 import { ProviderApiServiceAbstraction } from "@bitwarden/common/admin-console/abstractions/provider/provider-api.service.abstraction";
 import { ProviderService as ProviderServiceAbstraction } from "@bitwarden/common/admin-console/abstractions/provider.service";
+import { DefaultvNextOrganizationService } from "@bitwarden/common/admin-console/services/organization/default-vnext-organization.service";
 import { OrganizationApiService } from "@bitwarden/common/admin-console/services/organization/organization-api.service";
 import { OrganizationService } from "@bitwarden/common/admin-console/services/organization/organization.service";
 import { OrgDomainApiService } from "@bitwarden/common/admin-console/services/organization-domain/org-domain-api.service";
@@ -921,7 +926,7 @@ const safeProviders: SafeProvider[] = [
   safeProvider({
     provide: InternalPolicyService,
     useClass: PolicyService,
-    deps: [StateProvider, OrganizationServiceAbstraction],
+    deps: [StateProvider, vNextOrganizationServiceAbstraction],
   }),
   safeProvider({
     provide: PolicyServiceAbstraction,
@@ -989,6 +994,16 @@ const safeProviders: SafeProvider[] = [
     provide: OrganizationServiceAbstraction,
     useExisting: InternalOrganizationServiceAbstraction,
   }),
+  safeProvider({
+    provide: vNextInternalOrganizationServiceAbstraction,
+    useClass: DefaultvNextOrganizationService,
+    deps: [StateProvider],
+  }),
+  safeProvider({
+    provide: vNextOrganizationServiceAbstraction,
+    useExisting: vNextInternalOrganizationServiceAbstraction,
+  }),
+
   safeProvider({
     provide: OrganizationUserApiService,
     useClass: DefaultOrganizationUserApiService,
