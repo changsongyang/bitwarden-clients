@@ -728,7 +728,7 @@ const safeProviders: SafeProvider[] = [
       StateServiceAbstraction,
       ProviderServiceAbstraction,
       FolderApiServiceAbstraction,
-      InternalOrganizationServiceAbstraction,
+      vNextInternalOrganizationServiceAbstraction,
       SendApiServiceAbstraction,
       UserDecryptionOptionsServiceAbstraction,
       AvatarServiceAbstraction,
