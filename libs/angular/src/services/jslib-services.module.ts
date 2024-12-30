@@ -964,7 +964,7 @@ const safeProviders: SafeProvider[] = [
       ApiServiceAbstraction,
       TokenServiceAbstraction,
       LogService,
-      OrganizationServiceAbstraction,
+      vNextOrganizationServiceAbstraction,
       KeyGenerationServiceAbstraction,
       LOGOUT_CALLBACK,
       StateProvider,
