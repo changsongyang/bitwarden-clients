@@ -1,15 +1,17 @@
-<div class="tabbed-content">
-  <div class="tw-flex tw-items-center tw-gap-2">
-    <h2 class="tw-m-0">{{ "devices" | i18n }}</h2>
-    <i
-      class="bwi bwi-question-circle tw-flex tw-items-center tw-h-4 tw-w-4 bwi-color-primary"
-      aria-hidden="true"
-    ></i>
-    <i
-      *ngIf="asyncActionLoading"
-      class="bwi bwi-spinner bwi-spin tw-flex tw-items-center tw-h-4 tw-w-4"
-      aria-hidden="true"
-    ></i>
+<bit-container>
+  <div class="tabbed-header">
+    <div class="tw-flex tw-items-center tw-gap-2">
+      <h1>{{ "devices" | i18n }}</h1>
+      <i
+        class="bwi bwi-question-circle tw-flex tw-items-center tw-h-4 tw-w-4 bwi-color-primary"
+        aria-hidden="true"
+      ></i>
+      <i
+        *ngIf="asyncActionLoading"
+        class="bwi bwi-spinner bwi-spin tw-flex tw-items-center tw-h-4 tw-w-4"
+        aria-hidden="true"
+      ></i>
+    </div>
   </div>
 
   <p>{{ "deviceListDescription" | i18n }}</p>
@@ -76,4 +78,4 @@
       </td>
     </ng-template>
   </bit-table-scroll>
-</div>
+</bit-container>
