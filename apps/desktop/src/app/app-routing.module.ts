@@ -15,7 +15,6 @@ import {
   unauthGuardFn,
 } from "@bitwarden/angular/auth/guards";
 import { canAccessFeature } from "@bitwarden/angular/platform/guard/feature-flag.guard";
-import { extensionRefreshRedirect } from "@bitwarden/angular/utils/extension-refresh-redirect";
 import { NewDeviceVerificationNoticeGuard } from "@bitwarden/angular/vault/guards";
 import {
   AnonLayoutWrapperComponent,
@@ -40,7 +39,7 @@ import {
   TwoFactorTimeoutIcon,
 } from "@bitwarden/auth/angular";
 import { FeatureFlag } from "@bitwarden/common/enums/feature-flag.enum";
-import { LockV2Component } from "@bitwarden/key-management/angular";
+import { LockComponent } from "@bitwarden/key-management/angular";
 import {
   NewDeviceVerificationNoticePageOneComponent,
   NewDeviceVerificationNoticePageTwoComponent,
@@ -61,7 +60,6 @@ import { SsoComponentV1 } from "../auth/sso-v1.component";
 import { TwoFactorAuthComponent } from "../auth/two-factor-auth.component";
 import { TwoFactorComponent } from "../auth/two-factor.component";
 import { UpdateTempPasswordComponent } from "../auth/update-temp-password.component";
-import { LockComponent } from "../key-management/lock/components/lock.component";
 import { VaultComponent } from "../vault/app/vault/vault.component";
 
 import { SendComponent } from "./tools/send/send.component";
@@ -80,12 +78,6 @@ const routes: Routes = [
     pathMatch: "full",
     children: [], // Children lets us have an empty component.
     canActivate: [redirectGuard({ loggedIn: "/vault", loggedOut: "/login", locked: "/lock" })],
-  },
-  {
-    path: "lock",
-    component: LockComponent,
-    canActivate: [lockGuard()],
-    canMatch: [extensionRefreshRedirect("/lockV2")],
   },
   ...twofactorRefactorSwap(
     TwoFactorComponent,
@@ -373,8 +365,8 @@ const routes: Routes = [
         ],
       },
       {
-        path: "lockV2",
-        canActivate: [canAccessFeature(FeatureFlag.ExtensionRefresh), lockGuard()],
+        path: "lock",
+        canActivate: [lockGuard()],
         data: {
           pageIcon: LockIcon,
           pageTitle: {
@@ -385,7 +377,7 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            component: LockV2Component,
+            component: LockComponent,
           },
         ],
       },
