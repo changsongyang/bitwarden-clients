@@ -616,7 +616,9 @@ export class LoginComponent implements OnInit, OnDestroy {
    * @param event - The event object.
    */
   async handleSsoClick() {
-    if (!(await this.validateEmail())) {
+    const isEmailValid = await this.validateEmail();
+
+    if (!isEmailValid) {
       return;
     }
 
