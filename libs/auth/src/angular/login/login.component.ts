@@ -444,11 +444,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Continue button clicked.
+   * Continue button clicked (or enter key pressed).
    * Adds the login url to the browser's history so that the back button can be used to go back to the email entry state.
    * Needs to be separate from the continue() function because that can be triggered by the browser's forward button.
    */
-  protected async continueClicked() {
+  protected async continuePressed() {
     // Add a new entry to the browser's history so that there is a history entry to go back to
     history.pushState({}, "", window.location.href);
     await this.continue();

@@ -21,7 +21,7 @@
         bitInput
         appAutofocus
         (input)="onEmailInput($event)"
-        (keyup.enter)="continue()"
+        (keyup.enter)="continuePressed()"
       />
     </bit-form-field>
 
@@ -33,7 +33,7 @@
 
     <div class="tw-grid tw-gap-3">
       <!-- Continue button -->
-      <button type="button" bitButton block buttonType="primary" (click)="continueClicked()">
+      <button type="button" bitButton block buttonType="primary" (click)="continuePressed()">
         {{ "continue" | i18n }}
       </button>
 
