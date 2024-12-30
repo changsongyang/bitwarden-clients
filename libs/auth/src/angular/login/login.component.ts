@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   formGroup = this.formBuilder.group(
     {
-      email: new FormControl<string>("", [Validators.required, Validators.email]),
+      email: ["", [Validators.required, Validators.email]],
       masterPassword: [
         "",
         [Validators.required, Validators.minLength(Utils.originalMinimumPasswordLength)],
