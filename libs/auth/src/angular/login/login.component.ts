@@ -458,7 +458,9 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Continue to the master password entry state (only if email is validated)
    */
   protected async continue(): Promise<void> {
-    if (await this.validateEmail()) {
+    const isEmailValid = await this.validateEmail();
+
+    if (isEmailValid) {
       await this.toggleLoginUiState(LoginUiState.MASTER_PASSWORD_ENTRY);
     }
   }
