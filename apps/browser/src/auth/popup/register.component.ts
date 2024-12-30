@@ -1,3 +1,5 @@
+// FIXME: Update this file to be type safe and remove this and next line
+// @ts-strict-ignore
 import { Component } from "@angular/core";
 import { UntypedFormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -21,8 +23,8 @@ import { KeyService } from "@bitwarden/key-management";
   templateUrl: "register.component.html",
 })
 export class RegisterComponent extends BaseRegisterComponent {
-  color!: string;
-  text!: string;
+  color: string;
+  text: string;
 
   constructor(
     formValidationErrorService: FormValidationErrorsService,

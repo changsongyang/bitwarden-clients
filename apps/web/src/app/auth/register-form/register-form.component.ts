@@ -1,3 +1,5 @@
+// FIXME: Update this file to be type safe and remove this and next line
+// @ts-strict-ignore
 import { Component, Input, OnInit } from "@angular/core";
 import { UntypedFormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -27,13 +29,13 @@ import { AcceptOrganizationInviteService } from "../organization-invite/accept-o
   templateUrl: "./register-form.component.html",
 })
 export class RegisterFormComponent extends BaseRegisterComponent implements OnInit {
-  @Input() queryParamEmail: string | undefined;
-  @Input() queryParamFromOrgInvite: boolean | undefined;
-  @Input() enforcedPolicyOptions: MasterPasswordPolicyOptions | undefined;
-  @Input() referenceDataValue: ReferenceEventRequest | undefined;
+  @Input() queryParamEmail: string;
+  @Input() queryParamFromOrgInvite: boolean;
+  @Input() enforcedPolicyOptions: MasterPasswordPolicyOptions;
+  @Input() referenceDataValue: ReferenceEventRequest;
 
   showErrorSummary = false;
-  characterMinimumMessage: string = "";
+  characterMinimumMessage: string;
   referenceData!: ReferenceEventRequest;
 
   constructor(
@@ -86,7 +88,7 @@ export class RegisterFormComponent extends BaseRegisterComponent implements OnIn
 
   async ngOnInit() {
     await super.ngOnInit();
-    this.referenceData = this.referenceDataValue ?? new ReferenceEventRequest();
+    this.referenceData = this.referenceDataValue;
     if (this.queryParamEmail) {
       this.formGroup.get("email")?.setValue(this.queryParamEmail);
     }
