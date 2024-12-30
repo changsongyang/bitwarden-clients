@@ -17,6 +17,10 @@ export class PasswordTokenRequest extends TokenRequest implements CaptchaProtect
     super(twoFactor, device);
   }
 
+  setDeviceVerificationOtp(otp: string) {
+    this.deviceVerificationOtp = otp;
+  }
+
   toIdentityToken(clientId: ClientType) {
     const obj = super.toIdentityToken(clientId);
 
@@ -26,6 +30,10 @@ export class PasswordTokenRequest extends TokenRequest implements CaptchaProtect
 
     if (this.captchaResponse != null) {
       obj.captchaResponse = this.captchaResponse;
+    }
+
+    if (this.deviceVerificationOtp) {
+      obj.append("deviceVerificationOtp", this.deviceVerificationOtp);
     }
 
     return obj;
@@ -43,4 +51,6 @@ export class PasswordTokenRequest extends TokenRequest implements CaptchaProtect
         : undefined,
     });
   }
+
+  private deviceVerificationOtp?: string;
 }

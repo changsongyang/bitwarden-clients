@@ -4,9 +4,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
-import { UserVerificationService } from "@bitwarden/common/auth/abstractions/user-verification/user-verification.service.abstraction";
-import { VerificationType } from "@bitwarden/common/auth/enums/verification-type";
+import { DeviceVerificationRequest } from "@bitwarden/common/auth/models/request/device-verification.request";
 import { ButtonModule, FormFieldModule, IconButtonModule, LinkModule } from "@bitwarden/components";
+
+import { PasswordLoginStrategy } from "../../common/login-strategies/password-login.strategy";
 
 @Component({
   standalone: true,
@@ -28,13 +29,11 @@ export class NewDeviceVerificationComponent implements OnInit {
   });
 
   protected disableRequestOTP = false;
-  protected sentInitialCode = false;
-  protected sentCode = false;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private userVerificationService: UserVerificationService,
+    private passwordLoginStrategy: PasswordLoginStrategy,
   ) {}
 
   async ngOnInit() {
@@ -45,14 +44,7 @@ export class NewDeviceVerificationComponent implements OnInit {
   async requestOTP() {
     this.disableRequestOTP = true;
     try {
-      await this.userVerificationService.requestOTP();
-      this.sentCode = true;
-      this.sentInitialCode = true;
-
-      // Reset sentCode after 3 seconds
-      setTimeout(() => {
-        this.sentCode = false;
-      }, 3000);
+      // TODO: Implement OTP request
     } finally {
       this.disableRequestOTP = false;
     }
@@ -74,10 +66,19 @@ export class NewDeviceVerificationComponent implements OnInit {
         return;
       }
 
-      await this.userVerificationService.verifyUser({
-        type: VerificationType.OTP,
-        secret: code,
-      });
+      const deviceVerificationRequest = new DeviceVerificationRequest(true, code);
+      const authResult =
+        await this.passwordLoginStrategy.logInNewDeviceVerification(deviceVerificationRequest);
+
+      if (authResult.requiresTwoFactor) {
+        await this.router.navigate(["/2fa"]);
+        return;
+      }
+
+      if (authResult.forcePasswordReset) {
+        await this.router.navigate(["/update-temp-password"]);
+        return;
+      }
 
       // If verification succeeds, navigate to vault
       await this.router.navigate(["/vault"]);

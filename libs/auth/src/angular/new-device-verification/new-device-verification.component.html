@@ -1,13 +1,4 @@
 <form [formGroup]="formGroup" (ngSubmit)="submit()">
-  <div class="tw-mb-6">
-    <p class="mb-0">
-      <span class="tw-ml-2 tw-text-success" role="alert" *ngIf="sentCode">
-        <i class="bwi bwi-check-circle" aria-hidden="true"></i>
-        {{ "codeSent" | i18n }}
-      </span>
-    </p>
-  </div>
-
   <bit-form-field>
     <bit-label>{{ "verificationCode" | i18n }}</bit-label>
     <input
