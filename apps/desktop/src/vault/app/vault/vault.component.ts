@@ -20,7 +20,9 @@ import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { EventCollectionService } from "@bitwarden/common/abstractions/event/event-collection.service";
 import { BillingAccountProfileStateService } from "@bitwarden/common/billing/abstractions/account/billing-account-profile-state.service";
 import { EventType } from "@bitwarden/common/enums";
+import { FeatureFlag } from "@bitwarden/common/enums/feature-flag.enum";
 import { BroadcasterService } from "@bitwarden/common/platform/abstractions/broadcaster.service";
+import { ConfigService } from "@bitwarden/common/platform/abstractions/config/config.service";
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/platform/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/platform/abstractions/platform-utils.service";
@@ -34,6 +36,7 @@ import { DialogService } from "@bitwarden/components";
 import { PasswordRepromptService } from "@bitwarden/vault";
 
 import { SearchBarService } from "../../../app/layout/search/search-bar.service";
+import { CredentialGeneratorComponent } from "../../../app/tools/generator/credential-generator.component";
 import { GeneratorComponent } from "../../../app/tools/generator.component";
 import { invokeMenu, RendererMenuItem } from "../../../utils";
 
@@ -107,6 +110,7 @@ export class VaultComponent implements OnInit, OnDestroy {
     private apiService: ApiService,
     private dialogService: DialogService,
     private billingAccountProfileStateService: BillingAccountProfileStateService,
+    private configService: ConfigService,
   ) {}
 
   async ngOnInit() {
@@ -622,9 +626,27 @@ export class VaultComponent implements OnInit, OnDestroy {
   }
 
   async openGenerator(comingFromAddEdit: boolean, passwordType = true) {
-    // FIXME: Will need to be extended to use the cipher-form-generator component introduced with https://github.com/bitwarden/clients/pull/11350
-    if (this.modal != null) {
-      this.modal.close();
+    const isGeneratorSwapEnabled = await this.configService.getFeatureFlag(
+      FeatureFlag.GeneratorToolsModernization,
+    );
+
+    if (isGeneratorSwapEnabled) {
+      this.dialogService.open(CredentialGeneratorComponent, {
+        data: {
+          onCredentialGenerated: (value?: string) => {
+            if (this.addEditComponent != null) {
+              this.addEditComponent.markPasswordAsDirty();
+              if (passwordType) {
+                this.addEditComponent.cipher.login.password = value ?? "";
+              } else {
+                this.addEditComponent.cipher.login.username = value ?? "";
+              }
+            }
+          },
+          type: passwordType ? "password" : "username",
+        },
+      });
+      return;
     }
 
     const cipher = this.addEditComponent?.cipher;
