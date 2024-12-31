@@ -649,6 +649,7 @@ export class VaultComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // TODO: Remove this when new generator feature is enabled
     const cipher = this.addEditComponent?.cipher;
     const loginType = cipher != null && cipher.type === CipherType.Login && cipher.login != null;
 
