@@ -36,7 +36,6 @@ export class RegisterFormComponent extends BaseRegisterComponent implements OnIn
 
   showErrorSummary = false;
   characterMinimumMessage: string;
-  referenceData: ReferenceEventRequest;
 
   constructor(
     formValidationErrorService: FormValidationErrorsService,
