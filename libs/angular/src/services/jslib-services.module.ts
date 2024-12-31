@@ -1411,7 +1411,7 @@ const safeProviders: SafeProvider[] = [
   safeProvider({
     provide: CipherAuthorizationService,
     useClass: DefaultCipherAuthorizationService,
-    deps: [CollectionService, OrganizationServiceAbstraction],
+    deps: [CollectionService, vNextOrganizationServiceAbstraction, AccountServiceAbstraction],
   }),
   safeProvider({
     provide: AuthRequestApiService,
