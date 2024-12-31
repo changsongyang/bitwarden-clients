@@ -34,7 +34,9 @@
           "
           class="{{ itemHeightClass }}"
         >
-          <app-vault-icon slot="start" [cipher]="cipher"></app-vault-icon>
+          <div slot="start" class="tw-w-10">
+            <app-vault-icon [cipher]="cipher"></app-vault-icon>
+          </div>
           <span data-testid="item-name">{{ cipher.name }}</span>
           <i
             *ngIf="cipher.organizationId"
