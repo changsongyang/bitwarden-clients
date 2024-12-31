@@ -1,4 +1,4 @@
-import { Observable, shareReplay } from "rxjs";
+import { filter, Observable, OperatorFunction, shareReplay } from "rxjs";
 
 import { UserId } from "@bitwarden/common/types/guid";
 
@@ -19,4 +19,19 @@ export function perUserCache$<TValue>(
     }
     return observable;
   };
+}
+
+/**
+ * Strongly typed observable operator that filters out null/undefined values and adjusts the return type to
+ * be non-nullable.
+ *
+ * @example
+ * ```ts
+ * const source$ = of(1, null, 2, undefined, 3);
+ * source$.pipe(filterOutNullish()).subscribe(console.log);
+ * // Output: 1, 2, 3
+ * ```
+ */
+export function filterOutNullish<T>(): OperatorFunction<T | undefined | null, T> {
+  return filter((v): v is T => v != null);
 }

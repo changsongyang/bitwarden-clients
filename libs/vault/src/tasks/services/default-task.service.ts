@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { filter, map, switchMap } from "rxjs";
+import { map, switchMap } from "rxjs";
 
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { OrganizationService } from "@bitwarden/common/admin-console/abstractions/organization/organization.service.abstraction";
@@ -8,7 +8,7 @@ import { StateProvider } from "@bitwarden/common/platform/state";
 import { SecurityTaskId, UserId } from "@bitwarden/common/types/guid";
 import { SecurityTask, SecurityTaskStatus, TaskService } from "@bitwarden/vault";
 
-import { perUserCache$ } from "../../utils/observable-utilities";
+import { filterOutNullish, perUserCache$ } from "../../utils/observable-utilities";
 import { SecurityTaskData } from "../models/security-task.data";
 import { SecurityTaskResponse } from "../models/security-task.response";
 import { SECURITY_TASKS } from "../state/security-task.state";
@@ -35,7 +35,7 @@ export class DefaultTaskService implements TaskService {
         }
         return tasks;
       }),
-      filter((tasks) => tasks != null),
+      filterOutNullish(),
       map((tasks) => tasks.map((t) => new SecurityTask(t))),
     );
   });
