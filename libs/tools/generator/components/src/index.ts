@@ -3,3 +3,4 @@ export { CredentialGeneratorHistoryDialogComponent } from "./credential-generato
 export { EmptyCredentialHistoryComponent } from "./empty-credential-history.component";
 export { GeneratorModule } from "./generator.module";
 export { GeneratorServicesModule } from "./generator-services.module";
+export { CredentialGeneratorComponent } from "./credential-generator.component";
