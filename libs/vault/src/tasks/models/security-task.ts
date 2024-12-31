@@ -16,11 +16,7 @@ export class SecurityTask {
   creationDate: Date;
   revisionDate: Date;
 
-  constructor(obj?: SecurityTaskData) {
-    if (obj == null) {
-      return;
-    }
-
+  constructor(obj: SecurityTaskData) {
     this.id = obj.id;
     this.organizationId = obj.organizationId;
     this.cipherId = obj.cipherId;

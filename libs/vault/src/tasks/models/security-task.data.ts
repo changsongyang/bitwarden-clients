@@ -15,11 +15,7 @@ export class SecurityTaskData {
   creationDate: Date;
   revisionDate: Date;
 
-  constructor(response?: SecurityTaskResponse) {
-    if (response == null) {
-      return;
-    }
-
+  constructor(response: SecurityTaskResponse) {
     this.id = response.id;
     this.organizationId = response.organizationId;
     this.cipherId = response.cipherId;
@@ -30,7 +26,7 @@ export class SecurityTaskData {
   }
 
   static fromJSON(obj: Jsonify<SecurityTaskData>) {
-    return Object.assign(new SecurityTaskData(), obj, {
+    return Object.assign(new SecurityTaskData({} as SecurityTaskResponse), obj, {
       creationDate: new Date(obj.creationDate),
       revisionDate: new Date(obj.revisionDate),
     });
