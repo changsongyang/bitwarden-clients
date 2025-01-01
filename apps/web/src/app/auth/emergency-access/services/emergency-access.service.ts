@@ -22,14 +22,18 @@ import {
   Argon2KdfConfig,
   KdfConfig,
   PBKDF2KdfConfig,
-  UserKeyRotationDataProvider,
+  UserKeyRotationKeyRecoveryProvider,
   KeyService,
   KdfType,
 } from "@bitwarden/key-management";
 
 import { EmergencyAccessStatusType } from "../enums/emergency-access-status-type";
 import { EmergencyAccessType } from "../enums/emergency-access-type";
-import { GranteeEmergencyAccess, GrantorEmergencyAccess } from "../models/emergency-access";
+import {
+  GranteeEmergencyAccess,
+  GranteeEmergencyAccessWithPublicKey,
+  GrantorEmergencyAccess,
+} from "../models/emergency-access";
 import { EmergencyAccessAcceptRequest } from "../request/emergency-access-accept.request";
 import { EmergencyAccessConfirmRequest } from "../request/emergency-access-confirm.request";
 import { EmergencyAccessInviteRequest } from "../request/emergency-access-invite.request";
@@ -38,12 +42,17 @@ import {
   EmergencyAccessUpdateRequest,
   EmergencyAccessWithIdRequest,
 } from "../request/emergency-access-update.request";
+import { EmergencyAccessGranteeDetailsResponse } from "../response/emergency-access.response";
 
 import { EmergencyAccessApiService } from "./emergency-access-api.service";
 
 @Injectable()
 export class EmergencyAccessService
-  implements UserKeyRotationDataProvider<EmergencyAccessWithIdRequest>
+  implements
+    UserKeyRotationKeyRecoveryProvider<
+      EmergencyAccessWithIdRequest,
+      GranteeEmergencyAccessWithPublicKey
+    >
 {
   constructor(
     private emergencyAccessApiService: EmergencyAccessApiService,
@@ -302,30 +311,12 @@ export class EmergencyAccessService
     this.emergencyAccessApiService.postEmergencyAccessPassword(id, request);
   }
 
-  /**
-   * Returns existing emergency access keys re-encrypted with new user key.
-   * Intended for grantor.
-   * @param originalUserKey the original user key
-   * @param newUserKey the new user key
-   * @param userId the user id
-   * @throws Error if newUserKey is nullish
-   * @returns an array of re-encrypted emergency access requests or an empty array if there are no requests
-   */
-  async getRotatedData(
-    originalUserKey: UserKey,
-    newUserKey: UserKey,
-    userId: UserId,
-  ): Promise<EmergencyAccessWithIdRequest[]> {
-    if (newUserKey == null) {
-      throw new Error("New user key is required for rotation.");
-    }
-
-    const requests: EmergencyAccessWithIdRequest[] = [];
+  private async getEmergencyAccessData(): Promise<EmergencyAccessGranteeDetailsResponse[]> {
     const existingEmergencyAccess =
       await this.emergencyAccessApiService.getEmergencyAccessTrusted();
 
     if (!existingEmergencyAccess || existingEmergencyAccess.data.length === 0) {
-      return requests;
+      return [];
     }
 
     // Any Invited or Accepted requests won't have the key yet, so we don't need to update them
@@ -338,10 +329,58 @@ export class EmergencyAccessService
       allowedStatuses.has(d.status),
     );
 
-    for (const details of filteredAccesses) {
-      // Get public key of grantee
-      const publicKeyResponse = await this.apiService.getUserPublicKey(details.granteeId);
-      const publicKey = Utils.fromB64ToArray(publicKeyResponse.publicKey);
+    return filteredAccesses;
+  }
+
+  async getPublicKeys(): Promise<GranteeEmergencyAccessWithPublicKey[]> {
+    const emergencyAccessData = await this.getEmergencyAccessData();
+    const emergencyAccessDataWithPublicKeys = await Promise.all(
+      emergencyAccessData.map(async (details) => {
+        const grantee = new GranteeEmergencyAccessWithPublicKey();
+        grantee.id = details.id;
+        grantee.granteeId = details.granteeId;
+        grantee.name = details.name;
+        grantee.email = details.email;
+        grantee.type = details.type;
+        grantee.status = details.status;
+        grantee.waitTimeDays = details.waitTimeDays;
+        grantee.creationDate = details.creationDate;
+        grantee.avatarColor = details.avatarColor;
+        grantee.publicKey = (await this.apiService.getUserPublicKey(details.granteeId)).publicKey;
+        return grantee;
+      }),
+    );
+
+    return emergencyAccessDataWithPublicKeys;
+  }
+
+  /**
+   * Returns existing emergency access keys re-encrypted with new user key.
+   * Intended for grantor.
+   * @param newUserKey the new user key
+   * @param trustedPublicKeys the public keys of the emergency access grantors. These *must* be trusted somehow, and MUST NOT be passed in untrusted
+   * @param userId the user id
+   * @throws Error if newUserKey is nullish
+   * @returns an array of re-encrypted emergency access requests or an empty array if there are no requests
+   */
+  async getRotatedData(
+    newUserKey: UserKey,
+    trustedPublicKeys: string[],
+    userId: UserId,
+  ): Promise<EmergencyAccessWithIdRequest[]> {
+    if (newUserKey == null) {
+      throw new Error("New user key is required for rotation.");
+    }
+
+    const requests = [];
+
+    const allDetails = await this.getPublicKeys();
+    for (const details of allDetails) {
+      if (!(details.publicKey in trustedPublicKeys)) {
+        throw new Error("Untrusted public key found in emergency access data. ABORTING ROTATION.");
+      }
+
+      const publicKey = Utils.fromB64ToArray(details.publicKey);
 
       // Encrypt new user key with public key
       const encryptedKey = await this.encryptKey(newUserKey, publicKey);

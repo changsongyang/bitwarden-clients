@@ -42,3 +42,7 @@ export class ViewTypeEmergencyAccess {
   keyEncrypted: string;
   ciphers: CipherResponse[] = [];
 }
+
+export class GranteeEmergencyAccessWithPublicKey extends GranteeEmergencyAccess {
+  publicKey: string;
+}
