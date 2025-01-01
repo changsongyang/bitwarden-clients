@@ -158,9 +158,22 @@ export class UserKeyRotationService {
       request.sends = rotatedSends;
     }
 
+    const emergencyAccessGrantees = await this.emergencyAccessService.getPublicKeys();
+    for (const details of emergencyAccessGrantees) {
+      this.logService.info("[Userkey rotation] Emergency access grantee: " + details.name);
+      this.logService.info(
+        "[Userkey rotation] Emergency access grantee public key: " + details.publicKey,
+      );
+      this.logService.info(
+        "[Userkey rotation] Emergency access grantee fingerprint: " +
+          this.keyService.getFingerprint(details.publicKey),
+      );
+    }
+    const trustedPublicKeys = emergencyAccessGrantees.map((d) => d.publicKey);
+
     const rotatedEmergencyAccessKeys = await this.emergencyAccessService.getRotatedData(
-      originalUserKey,
       newUnencryptedUserKey,
+      trustedPublicKeys,
       user.id,
     );
     if (rotatedEmergencyAccessKeys != null) {
