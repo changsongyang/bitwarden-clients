@@ -7,7 +7,6 @@ import { FormBuilder } from "@angular/forms";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { OrganizationManagementPreferencesService } from "@bitwarden/common/admin-console/abstractions/organization-management-preferences/organization-management-preferences.service";
 import { LogService } from "@bitwarden/common/platform/abstractions/log.service";
-import { Utils } from "@bitwarden/common/platform/misc/utils";
 import { DialogService } from "@bitwarden/components";
 import { KeyService } from "@bitwarden/key-management";
 
@@ -21,6 +20,8 @@ type EmergencyAccessConfirmDialogData = {
   userId: string;
   /** traces a unique emergency request  */
   emergencyAccessId: string;
+  /** user public key */
+  publicKey: Uint8Array<ArrayBufferLike>;
 };
 @Component({
   selector: "emergency-access-confirm",
@@ -45,13 +46,12 @@ export class EmergencyAccessConfirmComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const publicKeyResponse = await this.apiService.getUserPublicKey(this.params.userId);
-      if (publicKeyResponse != null) {
-        const publicKey = Utils.fromB64ToArray(publicKeyResponse.publicKey);
-        const fingerprint = await this.keyService.getFingerprint(this.params.userId, publicKey);
-        if (fingerprint != null) {
-          this.fingerprint = fingerprint.join("-");
-        }
+      const fingerprint = await this.keyService.getFingerprint(
+        this.params.userId,
+        this.params.publicKey,
+      );
+      if (fingerprint != null) {
+        this.fingerprint = fingerprint.join("-");
       }
     } catch (e) {
       this.logService.error(e);
