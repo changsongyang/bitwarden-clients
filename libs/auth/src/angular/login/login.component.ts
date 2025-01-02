@@ -195,7 +195,12 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const credentials = new PasswordLoginCredentials(email ?? "", masterPassword ?? "");
+    if (!email || !masterPassword) {
+      this.logService.error("Email and master password are required");
+      return;
+    }
+
+    const credentials = new PasswordLoginCredentials(email, masterPassword);
 
     try {
       const authResult = await this.loginStrategyService.logIn(credentials);
