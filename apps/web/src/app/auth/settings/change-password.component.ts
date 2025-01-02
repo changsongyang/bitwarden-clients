@@ -10,12 +10,14 @@ import { AuditService } from "@bitwarden/common/abstractions/audit.service";
 import { PolicyService } from "@bitwarden/common/admin-console/abstractions/policy/policy.service.abstraction";
 import { AccountService } from "@bitwarden/common/auth/abstractions/account.service";
 import { InternalMasterPasswordServiceAbstraction } from "@bitwarden/common/auth/abstractions/master-password.service.abstraction";
+import { TokenService } from "@bitwarden/common/auth/abstractions/token.service";
 import { UserVerificationService } from "@bitwarden/common/auth/abstractions/user-verification/user-verification.service.abstraction";
 import { PasswordRequest } from "@bitwarden/common/auth/models/request/password.request";
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/platform/abstractions/messaging.service";
 import { PlatformUtilsService } from "@bitwarden/common/platform/abstractions/platform-utils.service";
 import { StateService } from "@bitwarden/common/platform/abstractions/state.service";
+import { HashPurpose } from "@bitwarden/common/platform/enums";
 import { CipherService } from "@bitwarden/common/vault/abstractions/cipher.service";
 import { SyncService } from "@bitwarden/common/vault/abstractions/sync/sync.service.abstraction";
 import { DialogService, ToastService } from "@bitwarden/components";
@@ -55,9 +57,11 @@ export class ChangePasswordComponent
     private userVerificationService: UserVerificationService,
     private keyRotationService: UserKeyRotationService,
     kdfConfigService: KdfConfigService,
-    masterPasswordService: InternalMasterPasswordServiceAbstraction,
+    protected masterPasswordService: InternalMasterPasswordServiceAbstraction,
     accountService: AccountService,
     toastService: ToastService,
+    private fullApiService: ApiService,
+    private tokenService: TokenService,
   ) {
     super(
       i18nService,
@@ -218,9 +222,25 @@ export class ChangePasswordComponent
       this.toastService.showToast({
         variant: "success",
         title: this.i18nService.t("masterPasswordChanged"),
-        message: this.i18nService.t("logBackIn"),
+        message: this.i18nService.t("masterPasswordChangedDesc"),
       });
-      this.messagingService.send("logout");
+      const newSecurityStamp = (await this.fullApiService.getSync()).profile.securityStamp;
+      await this.tokenService.setSecurityStamp(newSecurityStamp);
+      await this.keyService.setMasterKeyEncryptedUserKey(
+        newMasterKeyEncryptedUserKey[1].encryptedString,
+        userId,
+      );
+      await this.keyService.setUserKey(decryptedUserKey, userId);
+      await this.syncService.fullSync(true);
+      await this.masterPasswordService.setMasterKeyHash(
+        await this.keyService.hashMasterKey(
+          newMasterPassword,
+          newMasterKey,
+          HashPurpose.LocalAuthorization,
+        ),
+        userId,
+      );
+      await this.masterPasswordService.setMasterKey(newMasterKey, userId);
     } catch {
       this.toastService.showToast({
         variant: "error",

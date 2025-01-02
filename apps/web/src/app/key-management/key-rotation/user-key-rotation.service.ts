@@ -7,12 +7,15 @@ import { ApiService } from "@bitwarden/common/abstractions/api.service";
 import { VaultTimeoutService } from "@bitwarden/common/abstractions/vault-timeout/vault-timeout.service";
 import { Account } from "@bitwarden/common/auth/abstractions/account.service";
 import { DeviceTrustServiceAbstraction } from "@bitwarden/common/auth/abstractions/device-trust.service.abstraction";
+import { InternalMasterPasswordServiceAbstraction } from "@bitwarden/common/auth/abstractions/master-password.service.abstraction";
 import { TokenService } from "@bitwarden/common/auth/abstractions/token.service";
 import { UserVerificationService } from "@bitwarden/common/auth/abstractions/user-verification/user-verification.service.abstraction";
 import { VerificationType } from "@bitwarden/common/auth/enums/verification-type";
 import { MasterPasswordVerification } from "@bitwarden/common/auth/types/verification";
 import { EncryptService } from "@bitwarden/common/platform/abstractions/encrypt.service";
+import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
 import { LogService } from "@bitwarden/common/platform/abstractions/log.service";
+import { HashPurpose } from "@bitwarden/common/platform/enums";
 import { EncryptedString } from "@bitwarden/common/platform/models/domain/enc-string";
 import { SendService } from "@bitwarden/common/tools/send/services/send.service.abstraction";
 import { UserId } from "@bitwarden/common/types/guid";
@@ -20,7 +23,7 @@ import { UserKey } from "@bitwarden/common/types/key";
 import { CipherService } from "@bitwarden/common/vault/abstractions/cipher.service";
 import { FolderService } from "@bitwarden/common/vault/abstractions/folder/folder.service.abstraction";
 import { SyncService } from "@bitwarden/common/vault/abstractions/sync/sync.service.abstraction";
-import { DialogService } from "@bitwarden/components";
+import { DialogService, ToastService } from "@bitwarden/components";
 import { Argon2KdfConfig, KdfType, KeyService } from "@bitwarden/key-management";
 
 import { OrganizationUserResetPasswordService } from "../../admin-console/organizations/members/services/organization-user-reset-password/organization-user-reset-password.service";
@@ -52,6 +55,9 @@ export class UserKeyRotationService {
     private dialogService: DialogService,
     private fullApiService: ApiService,
     private tokenService: TokenService,
+    private toastService: ToastService,
+    private i18nService: I18nService,
+    private masterPasswordService: InternalMasterPasswordServiceAbstraction,
   ) {}
 
   /**
@@ -221,6 +227,23 @@ export class UserKeyRotationService {
     );
     await this.keyService.setUserKey(newUnencryptedUserKey, user.id);
     await this.syncService.fullSync(true);
+
+    await this.masterPasswordService.setMasterKeyHash(
+      await this.keyService.hashMasterKey(
+        newMasterPassword,
+        newMasterKey,
+        HashPurpose.LocalAuthorization,
+      ),
+      user.id,
+    );
+    await this.masterPasswordService.setMasterKey(newMasterKey, user.id);
+
+    this.toastService.showToast({
+      variant: "success",
+      title: this.i18nService.t("rotationCompletedTitle"),
+      message: this.i18nService.t("rotationCompletedDesc"),
+      timeout: 15000,
+    });
   }
 
   /**
@@ -359,6 +382,7 @@ export class UserKeyRotationService {
     this.logService.info("[Userkey rotation] Rotating device trust...");
     await this.deviceTrustService.rotateDevicesTrust(user.id, newUserKey, masterPasswordHash);
     this.logService.info("[Userkey rotation] Device trust rotation completed");
+    await this.vaultTimeoutService.logOut();
   }
 
   private async encryptPrivateKey(
