@@ -154,13 +154,11 @@ export class EmergencyAccessService
    * @param id emergency access id
    * @param token secret token provided in email
    */
-  async confirm(id: string, granteeId: string) {
+  async confirm(id: string, granteeId: string, publicKey: Uint8Array): Promise<void> {
     const userKey = await this.keyService.getUserKey();
     if (!userKey) {
       throw new Error("No user key found");
     }
-    const publicKeyResponse = await this.apiService.getUserPublicKey(granteeId);
-    const publicKey = Utils.fromB64ToArray(publicKeyResponse.publicKey);
 
     try {
       this.logService.debug(
