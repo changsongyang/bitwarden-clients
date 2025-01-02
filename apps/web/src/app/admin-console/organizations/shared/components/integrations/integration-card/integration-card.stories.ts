@@ -6,8 +6,7 @@ import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.servic
 import { ThemeTypes } from "@bitwarden/common/platform/enums";
 import { ThemeStateService } from "@bitwarden/common/platform/theming/theme-state.service";
 import { I18nMockService } from "@bitwarden/components";
-
-import { SharedModule } from "../../../shared.module";
+import { SharedModule } from "@bitwarden/components/src/shared";
 
 import { IntegrationCardComponent } from "./integration-card.component";
 
