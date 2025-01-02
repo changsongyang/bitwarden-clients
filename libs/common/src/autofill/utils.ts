@@ -51,7 +51,7 @@ export function normalizeExpiryYearFormat(yearInput: string | number): Year | nu
 
 /**
  * Takes a cipher card view and returns "true" if the month and year affirmativey indicate
- * the card is expired. Uncertain cases return "false"
+ * the card is expired. Uncertain cases return "false".
  *
  * @param {CardView} cipherCard
  * @return {*}  {boolean}
@@ -85,9 +85,9 @@ export function isCardExpired(cipherCard: CardView): boolean {
       const parsedMonthInteger = parseInt(expMonth, 10);
       const parsedMonthIsValid = parsedMonthInteger && !isNaN(parsedMonthInteger);
 
-      // If the parsed month value is 0, we don't know when the expiry passes this year, so treat it as expired
+      // If the parsed month value is 0, we don't know when the expiry passes this year, so do not treat it as expired
       if (!parsedMonthIsValid) {
-        return true;
+        return false;
       }
 
       // `Date` months are zero-indexed
