@@ -14,7 +14,7 @@ import {
   CredentialGeneratorHistoryDialogComponent,
   GeneratorModule,
 } from "@bitwarden/generator-components";
-import { GeneratedCredential } from "@bitwarden/generator-core";
+import { CipherFormGeneratorComponent } from "@bitwarden/vault";
 
 export type CredentialGeneratorParams = {
   onCredentialGenerated: (value?: string) => void;
@@ -26,6 +26,7 @@ export type CredentialGeneratorParams = {
   selector: "credential-generator",
   templateUrl: "credential-generator.component.html",
   imports: [
+    CipherFormGeneratorComponent,
     CommonModule,
     DialogModule,
     ButtonModule,
@@ -36,7 +37,7 @@ export type CredentialGeneratorParams = {
   ],
 })
 export class CredentialGeneratorComponent {
-  credentials?: GeneratedCredential;
+  credentialValue?: string;
 
   constructor(
     @Inject(DIALOG_DATA) protected data: CredentialGeneratorParams,
@@ -44,15 +45,15 @@ export class CredentialGeneratorComponent {
   ) {}
 
   applyCredentials = () => {
-    this.data.onCredentialGenerated(this.credentials?.credential);
+    this.data.onCredentialGenerated(this.credentialValue);
   };
 
   clearCredentials = () => {
     this.data.onCredentialGenerated();
   };
 
-  onCredentialGenerated = (generatedCred: GeneratedCredential) => {
-    this.credentials = generatedCred;
+  onCredentialGenerated = (value: string) => {
+    this.credentialValue = value;
   };
 
   openHistoryDialog = () => {
