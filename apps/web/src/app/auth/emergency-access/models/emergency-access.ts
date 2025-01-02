@@ -44,5 +44,5 @@ export class ViewTypeEmergencyAccess {
 }
 
 export class GranteeEmergencyAccessWithPublicKey extends GranteeEmergencyAccess {
-  publicKey: string;
+  publicKey: Uint8Array;
 }

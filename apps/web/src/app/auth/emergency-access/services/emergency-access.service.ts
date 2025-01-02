@@ -22,7 +22,6 @@ import {
   Argon2KdfConfig,
   KdfConfig,
   PBKDF2KdfConfig,
-  UserKeyRotationKeyRecoveryProvider,
   KeyService,
   KdfType,
 } from "@bitwarden/key-management";
@@ -163,13 +162,15 @@ export class EmergencyAccessService
    * @param id emergency access id
    * @param token secret token provided in email
    */
-  async confirm(id: string, granteeId: string) {
+  async confirm(
+    id: string,
+    granteeId: string,
+    publicKey: Uint8Array<ArrayBufferLike>,
+  ): Promise<void> {
     const userKey = await this.keyService.getUserKey();
     if (!userKey) {
       throw new Error("No user key found");
     }
-    const publicKeyResponse = await this.apiService.getUserPublicKey(granteeId);
-    const publicKey = Utils.fromB64ToArray(publicKeyResponse.publicKey);
 
     try {
       this.logService.debug(
@@ -346,7 +347,9 @@ export class EmergencyAccessService
         grantee.waitTimeDays = details.waitTimeDays;
         grantee.creationDate = details.creationDate;
         grantee.avatarColor = details.avatarColor;
-        grantee.publicKey = (await this.apiService.getUserPublicKey(details.granteeId)).publicKey;
+        grantee.publicKey = Utils.fromB64ToArray(
+          (await this.apiService.getUserPublicKey(details.granteeId)).publicKey,
+        );
         return grantee;
       }),
     );
@@ -365,7 +368,7 @@ export class EmergencyAccessService
    */
   async getRotatedData(
     newUserKey: UserKey,
-    trustedPublicKeys: string[],
+    trustedPublicKeys: Uint8Array<ArrayBufferLike>[],
     userId: UserId,
   ): Promise<EmergencyAccessWithIdRequest[]> {
     if (newUserKey == null) {
