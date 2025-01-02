@@ -43,7 +43,6 @@ export enum FeatureFlag {
   PM11360RemoveProviderExportPermission = "pm-11360-remove-provider-export-permission",
   PM12443RemovePagingLogic = "pm-12443-remove-paging-logic",
   PrivateKeyRegeneration = "pm-12241-private-key-regeneration",
-  DeviceManagement = "device-management",
   ResellerManagedOrgAlert = "PM-15814-alert-owners-of-reseller-managed-orgs",
 }
 
@@ -98,7 +97,6 @@ export const DefaultFeatureFlagValue = {
   [FeatureFlag.PM11360RemoveProviderExportPermission]: FALSE,
   [FeatureFlag.PM12443RemovePagingLogic]: FALSE,
   [FeatureFlag.PrivateKeyRegeneration]: FALSE,
-  [FeatureFlag.DeviceManagement]: FALSE,
   [FeatureFlag.ResellerManagedOrgAlert]: FALSE,
 } satisfies Record<FeatureFlag, AllowedFeatureFlagTypes>;
 
