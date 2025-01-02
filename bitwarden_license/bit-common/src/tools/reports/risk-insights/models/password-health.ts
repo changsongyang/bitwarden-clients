@@ -25,9 +25,13 @@ export type ApplicationHealthReportDetail = {
   passwordCount: number;
   atRiskPasswordCount: number;
   memberCount: number;
-
+  atRiskMemberCount: number;
   memberDetails: MemberDetailsFlat[];
   atRiskMemberDetails: MemberDetailsFlat[];
+};
+
+export type ApplicationHealthReportDetailWithCriticalFlag = ApplicationHealthReportDetail & {
+  isMarkedAsCritical: boolean;
 };
 
 /**

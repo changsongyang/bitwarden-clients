@@ -919,6 +919,12 @@
   "baseUrl": {
     "message": "URL du serveur"
   },
+  "authenticationTimeout": {
+    "message": "Délai d'authentification dépassé"
+  },
+  "authenticationSessionTimedOut": {
+    "message": "La session d'authentification a expiré. Veuillez redémarrer le processus de connexion."
+  },
   "selfHostBaseUrl": {
     "message": "Self-host server URL",
     "description": "Label for field requesting a self-hosted integration service URL"
@@ -1728,9 +1734,6 @@
   "windowsHelloConsentMessage": {
     "message": "Vérifier pour Bitwarden."
   },
-  "polkitConsentMessage": {
-    "message": "S'authentifier pour déverrouiller Bitwarden."
-  },
   "unlockWithTouchId": {
     "message": "Déverrouiller avec Touch ID"
   },
@@ -2478,7 +2481,7 @@
     "message": "Generate email"
   },
   "spinboxBoundariesHint": {
-    "message": "La valeur doit être comprise entre $MIN$ et $MAX$.",
+    "message": "Value must be between $MIN$ and $MAX$.",
     "description": "Explains spin box minimum and maximum values to the user",
     "placeholders": {
       "min": {
@@ -2492,7 +2495,7 @@
     }
   },
   "passwordLengthRecommendationHint": {
-    "message": " Utilisez $RECOMMENDED$ caractères ou plus pour générer un mot de passe fort.",
+    "message": " Use $RECOMMENDED$ characters or more to generate a strong password.",
     "description": "Appended to `spinboxBoundariesHint` to recommend a length to the user. This must include any language-specific 'sentence' separator characters (e.g. a space in english).",
     "placeholders": {
       "recommended": {
@@ -2502,7 +2505,7 @@
     }
   },
   "passphraseNumWordsRecommendationHint": {
-    "message": " Utilisez $RECOMMENDED$ mots ou plus pour générer une phrase de passe forte.",
+    "message": " Use $RECOMMENDED$ words or more to generate a strong passphrase.",
     "description": "Appended to `spinboxBoundariesHint` to recommend a number of words to the user. This must include any language-specific 'sentence' separator characters (e.g. a space in english).",
     "placeholders": {
       "recommended": {
@@ -2723,13 +2726,13 @@
     "message": "Une notification a été envoyée à votre appareil."
   },
   "aNotificationWasSentToYourDevice": {
-    "message": "Une notification a été envoyée à votre appareil"
+    "message": "A notification was sent to your device"
   },
   "makeSureYourAccountIsUnlockedAndTheFingerprintEtc": {
-    "message": "Assurez-vous que votre compte est déverrouillé et que la phrase d'empreinte digitale correspond à celle de l'autre appareil"
+    "message": "Make sure your account is unlocked and the fingerprint phrase matches on the other device"
   },
   "needAnotherOptionV1": {
-    "message": "Besoin d'une autre option ?"
+    "message": "Need another option?"
   },
   "fingerprintMatchInfo": {
     "message": "Veuillez vous assurer que votre coffre est déverrouillé et que la phrase d'empreinte correspond à celle de l'autre appareil."
@@ -2738,13 +2741,13 @@
     "message": "Phrase d'empreinte"
   },
   "youWillBeNotifiedOnceTheRequestIsApproved": {
-    "message": "Vous serez notifié une fois que la demande sera approuvée"
+    "message": "You will be notified once the request is approved"
   },
   "needAnotherOption": {
     "message": "La connexion avec l'appareil doit être configurée dans les paramètres de l'application Bitwarden. Besoin d'une autre option ?"
   },
   "viewAllLogInOptions": {
-    "message": "Afficher toutes les options de connexion"
+    "message": "View all log in options"
   },
   "viewAllLoginOptions": {
     "message": "Afficher toutes les options de connexion"
@@ -3391,5 +3394,41 @@
   },
   "fileSavedToDevice": {
     "message": "Fichier enregistré sur l'appareil. Gérez à partir des téléchargements de votre appareil."
+  },
+  "importantNotice": {
+    "message": "Avis important"
+  },
+  "setupTwoStepLogin": {
+    "message": "Configurer l'identification à deux facteurs"
+  },
+  "newDeviceVerificationNoticeContentPage1": {
+    "message": "Bitwarden enverra un code au courriel de votre compte pour vérifier les connexions depuis de nouveaux appareils à partir de février 2025."
+  },
+  "newDeviceVerificationNoticeContentPage2": {
+    "message": "Vous pouvez configurer l'identification à deux facteurs comme un moyen alternatif de protéger votre compte ou de changer votre adresse courriel à une autre à laquelle vous pouvez accéder."
+  },
+  "remindMeLater": {
+    "message": "Me le rappeler plus tard"
+  },
+  "newDeviceVerificationNoticePageOneFormContent": {
+    "message": "Avez-vous un accès fiable à votre courriel $EMAIL$?",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "your_name@email.com"
+      }
+    }
+  },
+  "newDeviceVerificationNoticePageOneEmailAccessNo": {
+    "message": "Non, je ne l'ai pas"
+  },
+  "newDeviceVerificationNoticePageOneEmailAccessYes": {
+    "message": "Oui, je peux accéder à mon courriel de manière fiable"
+  },
+  "turnOnTwoStepLogin": {
+    "message": "Activer l'identification à deux facteurs"
+  },
+  "changeAcctEmail": {
+    "message": "Changer le courriel du compte"
   }
 }
