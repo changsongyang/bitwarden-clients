@@ -60,7 +60,6 @@ export class AllApplicationsComponent implements OnInit, OnDestroy {
   destroyRef = inject(DestroyRef);
   isLoading$: Observable<boolean> = of(false);
   isCriticalAppsFeatureEnabled = false;
-  showDebugTabs = false;
 
   async ngOnInit() {
     this.isCriticalAppsFeatureEnabled = await this.configService.getFeatureFlag(
