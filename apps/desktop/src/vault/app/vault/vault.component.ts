@@ -36,13 +36,13 @@ import { DialogService } from "@bitwarden/components";
 import { PasswordRepromptService } from "@bitwarden/vault";
 
 import { SearchBarService } from "../../../app/layout/search/search-bar.service";
-import { CredentialGeneratorComponent } from "../../../app/tools/generator/credential-generator.component";
 import { GeneratorComponent } from "../../../app/tools/generator.component";
 import { invokeMenu, RendererMenuItem } from "../../../utils";
 
 import { AddEditComponent } from "./add-edit.component";
 import { AttachmentsComponent } from "./attachments.component";
 import { CollectionsComponent } from "./collections.component";
+import { CredentialGeneratorComponent } from "./credential-generator.component";
 import { FolderAddEditComponent } from "./folder-add-edit.component";
 import { PasswordHistoryComponent } from "./password-history.component";
 import { ShareComponent } from "./share.component";
