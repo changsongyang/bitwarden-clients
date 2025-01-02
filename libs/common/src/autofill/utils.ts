@@ -64,27 +64,27 @@ export function isCardExpired(cipherCard: CardView): boolean {
 
     const now = new Date();
     const normalizedYear = normalizeExpiryYearFormat(expYear);
-    const parsedYear = parseInt(normalizedYear, 10);
+    const parsedYear = normalizedYear ? parseInt(normalizedYear, 10) : NaN;
 
-    const expiryYearIsBeforeThisYear = parsedYear < now.getFullYear();
-    const expiryYearIsAfterThisYear = parsedYear > now.getFullYear();
+    const expiryYearIsBeforeCurrentYear = parsedYear < now.getFullYear();
+    const expiryYearIsAfterCurrentYear = parsedYear > now.getFullYear();
 
     // If the expiry year is before the current year, skip checking the month, since it must be expired
-    if (normalizedYear && expiryYearIsBeforeThisYear) {
+    if (normalizedYear && expiryYearIsBeforeCurrentYear) {
       return true;
     }
 
     // If the expiry year is after the current year, skip checking the month, since it cannot be expired
-    if (normalizedYear && expiryYearIsAfterThisYear) {
+    if (normalizedYear && expiryYearIsAfterCurrentYear) {
       return false;
     }
 
     if (normalizedYear && expMonth) {
       const parsedMonthInteger = parseInt(expMonth, 10);
-      const parsedMonthIsInvalid = !parsedMonthInteger || isNaN(parsedMonthInteger);
+      const parsedMonthIsValid = parsedMonthInteger && !isNaN(parsedMonthInteger);
 
       // If the parsed month value is 0, we don't know when the expiry passes this year, so treat it as expired
-      if (parsedMonthIsInvalid) {
+      if (!parsedMonthIsValid) {
         return true;
       }
 
