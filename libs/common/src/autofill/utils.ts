@@ -1,5 +1,3 @@
-// FIXME: Update this file to be type safe and remove this and next line
-// @ts-strict-ignore
 import {
   DelimiterPatternExpression,
   ExpiryFullYearPattern,
@@ -25,11 +23,11 @@ export function normalizeExpiryYearFormat(yearInput: string | number): Year | nu
   let expirationYear = yearInputIsEmpty ? null : `${yearInput}`;
 
   // Exit early if year is already formatted correctly or empty
-  if (yearInputIsEmpty || /^[1-9]{1}\d{3}$/.test(expirationYear)) {
+  if (yearInputIsEmpty || (expirationYear && /^[1-9]{1}\d{3}$/.test(expirationYear))) {
     return expirationYear as Year;
   }
 
-  expirationYear = expirationYear
+  expirationYear = (expirationYear || "")
     // For safety, because even input[type="number"] will allow decimals
     .replace(/[^\d]/g, "")
     // remove any leading zero padding (leave the last leading zero if it ends the string)
@@ -53,7 +51,7 @@ export function normalizeExpiryYearFormat(yearInput: string | number): Year | nu
 
 /**
  * Takes a cipher card view and returns "true" if the month and year affirmativey indicate
- * the card is expired.
+ * the card is expired. Uncertain cases return "false"
  *
  * @param {CardView} cipherCard
  * @return {*}  {boolean}
@@ -61,6 +59,10 @@ export function normalizeExpiryYearFormat(yearInput: string | number): Year | nu
 export function isCardExpired(cipherCard: CardView): boolean {
   if (cipherCard) {
     const { expMonth = null, expYear = null } = cipherCard;
+
+    if (!expYear) {
+      return false;
+    }
 
     const now = new Date();
     const normalizedYear = normalizeExpiryYearFormat(expYear);
@@ -257,13 +259,18 @@ function parseNonDelimitedYearMonthExpiry(dateInput: string): [string | null, st
     parsedMonth = dateInput.slice(-1);
 
     const currentYear = new Date().getFullYear();
-    const normalizedParsedYear = parseInt(normalizeExpiryYearFormat(parsedYear), 10);
-    const normalizedParsedYearAlternative = parseInt(
-      normalizeExpiryYearFormat(dateInput.slice(-2)),
-      10,
-    );
+    const normalizedYearFormat = normalizeExpiryYearFormat(parsedYear);
+    const normalizedParsedYear = normalizedYearFormat && parseInt(normalizedYearFormat, 10);
+    const normalizedExpiryYearFormat = normalizeExpiryYearFormat(dateInput.slice(-2));
+    const normalizedParsedYearAlternative =
+      normalizedExpiryYearFormat && parseInt(normalizedExpiryYearFormat, 10);
 
-    if (normalizedParsedYear < currentYear && normalizedParsedYearAlternative >= currentYear) {
+    if (
+      normalizedParsedYear &&
+      normalizedParsedYear < currentYear &&
+      normalizedParsedYearAlternative &&
+      normalizedParsedYearAlternative >= currentYear
+    ) {
       parsedYear = dateInput.slice(-2);
       parsedMonth = dateInput.slice(0, 1);
     }
@@ -295,17 +302,24 @@ export function parseYearMonthExpiry(combinedExpiryValue: string): [Year | null,
 
   // If there is only one date part, no delimiter was found in the passed value
   if (dateParts.length === 1) {
-    [parsedYear, parsedMonth] = parseNonDelimitedYearMonthExpiry(sanitizedFirstPart);
+    const [parsedNonDelimitedYear, parsedNonDelimitedMonth] =
+      parseNonDelimitedYearMonthExpiry(sanitizedFirstPart);
+
+    parsedYear = parsedNonDelimitedYear;
+    parsedMonth = parsedNonDelimitedMonth;
   }
   // There are multiple date parts
   else {
-    [parsedYear, parsedMonth] = parseDelimitedYearMonthExpiry([
+    const [parsedDelimitedYear, parsedDelimitedMonth] = parseDelimitedYearMonthExpiry([
       sanitizedFirstPart,
       sanitizedSecondPart,
     ]);
+
+    parsedYear = parsedDelimitedYear;
+    parsedMonth = parsedDelimitedMonth;
   }
 
-  const normalizedParsedYear = normalizeExpiryYearFormat(parsedYear);
+  const normalizedParsedYear = parsedYear ? normalizeExpiryYearFormat(parsedYear) : null;
   const normalizedParsedMonth = parsedMonth?.replace(/^0+/, "").slice(0, 2);
 
   // Set "empty" values to null
