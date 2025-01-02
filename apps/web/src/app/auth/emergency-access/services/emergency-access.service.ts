@@ -153,6 +153,7 @@ export class EmergencyAccessService
    * Intended for grantor.
    * @param id emergency access id
    * @param token secret token provided in email
+   * @param publicKey public key of grantee
    */
   async confirm(id: string, granteeId: string, publicKey: Uint8Array): Promise<void> {
     const userKey = await this.keyService.getUserKey();
