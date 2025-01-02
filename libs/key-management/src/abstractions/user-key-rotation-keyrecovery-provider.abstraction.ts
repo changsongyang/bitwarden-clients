@@ -25,7 +25,7 @@ export interface UserKeyRotationKeyRecoveryProvider<
    */
   getRotatedData(
     newUserKey: UserKey,
-    trustedPublicKeys: string[],
+    trustedPublicKeys: Uint8Array[],
     userId: UserId,
   ): Promise<TRequest[]>;
 }

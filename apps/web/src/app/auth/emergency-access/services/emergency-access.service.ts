@@ -24,6 +24,7 @@ import {
   PBKDF2KdfConfig,
   KeyService,
   KdfType,
+  UserKeyRotationKeyRecoveryProvider,
 } from "@bitwarden/key-management";
 
 import { EmergencyAccessStatusType } from "../enums/emergency-access-status-type";
@@ -162,11 +163,7 @@ export class EmergencyAccessService
    * @param id emergency access id
    * @param token secret token provided in email
    */
-  async confirm(
-    id: string,
-    granteeId: string,
-    publicKey: Uint8Array<ArrayBufferLike>,
-  ): Promise<void> {
+  async confirm(id: string, granteeId: string, publicKey: Uint8Array): Promise<void> {
     const userKey = await this.keyService.getUserKey();
     if (!userKey) {
       throw new Error("No user key found");
@@ -368,7 +365,7 @@ export class EmergencyAccessService
    */
   async getRotatedData(
     newUserKey: UserKey,
-    trustedPublicKeys: Uint8Array<ArrayBufferLike>[],
+    trustedPublicKeys: Uint8Array[],
     userId: UserId,
   ): Promise<EmergencyAccessWithIdRequest[]> {
     if (newUserKey == null) {
@@ -377,16 +374,26 @@ export class EmergencyAccessService
 
     const requests = [];
 
+    this.logService.info(
+      "Starting emergency access rotation, with trusted keys: ",
+      trustedPublicKeys,
+    );
+
     const allDetails = await this.getPublicKeys();
     for (const details of allDetails) {
-      if (!(details.publicKey in trustedPublicKeys)) {
-        throw new Error("Untrusted public key found in emergency access data. ABORTING ROTATION.");
+      if (
+        trustedPublicKeys.find(
+          (pk) => Utils.fromBufferToHex(pk) === Utils.fromBufferToHex(details.publicKey),
+        ) == null
+      ) {
+        this.logService.info(
+          `Public key for user ${details.granteeId} is not trusted, skipping rotation.`,
+        );
+        throw new Error("Public key for user is not trusted.");
       }
 
-      const publicKey = Utils.fromB64ToArray(details.publicKey);
-
       // Encrypt new user key with public key
-      const encryptedKey = await this.encryptKey(newUserKey, publicKey);
+      const encryptedKey = await this.encryptKey(newUserKey, details.publicKey);
 
       const updateRequest = new EmergencyAccessWithIdRequest();
       updateRequest.id = details.id;
