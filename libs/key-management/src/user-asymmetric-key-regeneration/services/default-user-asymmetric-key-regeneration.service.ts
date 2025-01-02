@@ -51,8 +51,8 @@ export class DefaultUserAsymmetricKeysRegenerationService
   private async shouldRegenerate(userId: UserId): Promise<boolean> {
     const userKey = await firstValueFrom(this.keyService.userKey$(userId));
 
-    // SSO Login for non trusted devices will not have a userKey and we should skip regeneration.
-    // In this case, regeneration will happen on master password unlock or login with device in the SSO flow.
+    // For SSO logins from untrusted devices, the userKey will not be available, and the private key regeneration process should be skipped.
+    // In such cases, regeneration will occur on the following device login flow.
     if (!userKey) {
       this.logService.info(
         "[UserAsymmetricKeyRegeneration] User symmetric key unavailable, skipping regeneration for the user.",
