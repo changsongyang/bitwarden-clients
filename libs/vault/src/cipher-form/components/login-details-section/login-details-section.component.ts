@@ -70,8 +70,8 @@ export class LoginDetailsSectionComponent implements OnInit {
    */
   get canCaptureTotp() {
     return (
-      window.location.href.indexOf("uilocation=popout") === -1 &&
       this.totpCaptureService != null &&
+      this.totpCaptureService.canCaptureTotp(window) &&
       this.loginDetailsForm.controls.totp.enabled
     );
   }
