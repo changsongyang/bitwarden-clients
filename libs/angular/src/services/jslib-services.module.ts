@@ -37,6 +37,8 @@ import {
   RegisterRouteService,
   AuthRequestApiService,
   DefaultAuthRequestApiService,
+  DefaultLoginSuccessHandlerService,
+  LoginSuccessHandlerService,
 } from "@bitwarden/auth/common";
 import { ApiService as ApiServiceAbstraction } from "@bitwarden/common/abstractions/api.service";
 import { AuditService as AuditServiceAbstraction } from "@bitwarden/common/abstractions/audit.service";
@@ -136,11 +138,13 @@ import {
 import { AccountBillingApiServiceAbstraction } from "@bitwarden/common/billing/abstractions/account/account-billing-api.service.abstraction";
 import { BillingAccountProfileStateService } from "@bitwarden/common/billing/abstractions/account/billing-account-profile-state.service";
 import { OrganizationBillingApiServiceAbstraction } from "@bitwarden/common/billing/abstractions/organizations/organization-billing-api.service.abstraction";
+import { TaxServiceAbstraction } from "@bitwarden/common/billing/abstractions/tax.service.abstraction";
 import { AccountBillingApiService } from "@bitwarden/common/billing/services/account/account-billing-api.service";
 import { DefaultBillingAccountProfileStateService } from "@bitwarden/common/billing/services/account/billing-account-profile-state.service";
 import { BillingApiService } from "@bitwarden/common/billing/services/billing-api.service";
 import { OrganizationBillingApiService } from "@bitwarden/common/billing/services/organization/organization-billing-api.service";
 import { OrganizationBillingService } from "@bitwarden/common/billing/services/organization-billing.service";
+import { TaxService } from "@bitwarden/common/billing/services/tax.service";
 import { AppIdService as AppIdServiceAbstraction } from "@bitwarden/common/platform/abstractions/app-id.service";
 import { BroadcasterService } from "@bitwarden/common/platform/abstractions/broadcaster.service";
 import { BulkEncryptService } from "@bitwarden/common/platform/abstractions/bulk-encrypt.service";
@@ -281,6 +285,10 @@ import {
   DefaultBiometricStateService,
   KdfConfigService,
   DefaultKdfConfigService,
+  UserAsymmetricKeysRegenerationService,
+  DefaultUserAsymmetricKeysRegenerationService,
+  UserAsymmetricKeysRegenerationApiService,
+  DefaultUserAsymmetricKeysRegenerationApiService,
 } from "@bitwarden/key-management";
 import { PasswordRepromptService } from "@bitwarden/vault";
 import {
@@ -292,6 +300,7 @@ import {
   IndividualVaultExportServiceAbstraction,
 } from "@bitwarden/vault-export-core";
 
+import { NewDeviceVerificationNoticeService } from "../../../vault/src/services/new-device-verification-notice.service";
 import { FormValidationErrorsService as FormValidationErrorsServiceAbstraction } from "../platform/abstractions/form-validation-errors.service";
 import { ViewCacheService } from "../platform/abstractions/view-cache.service";
 import { FormValidationErrorsService } from "../platform/services/form-validation-errors.service";
@@ -1265,6 +1274,11 @@ const safeProviders: SafeProvider[] = [
     deps: [ApiServiceAbstraction, LogService, ToastService],
   }),
   safeProvider({
+    provide: TaxServiceAbstraction,
+    useClass: TaxService,
+    deps: [ApiServiceAbstraction],
+  }),
+  safeProvider({
     provide: BillingAccountProfileStateService,
     useClass: DefaultBillingAccountProfileStateService,
     deps: [StateProvider],
@@ -1377,7 +1391,6 @@ const safeProviders: SafeProvider[] = [
       AccountServiceAbstraction,
       KdfConfigService,
       KeyServiceAbstraction,
-      ApiServiceAbstraction,
     ],
   }),
   safeProvider({
@@ -1394,6 +1407,30 @@ const safeProviders: SafeProvider[] = [
     provide: LoginDecryptionOptionsService,
     useClass: DefaultLoginDecryptionOptionsService,
     deps: [MessagingServiceAbstraction],
+  }),
+  safeProvider(NewDeviceVerificationNoticeService),
+  safeProvider({
+    provide: UserAsymmetricKeysRegenerationApiService,
+    useClass: DefaultUserAsymmetricKeysRegenerationApiService,
+    deps: [ApiServiceAbstraction],
+  }),
+  safeProvider({
+    provide: UserAsymmetricKeysRegenerationService,
+    useClass: DefaultUserAsymmetricKeysRegenerationService,
+    deps: [
+      KeyServiceAbstraction,
+      CipherServiceAbstraction,
+      UserAsymmetricKeysRegenerationApiService,
+      LogService,
+      SdkService,
+      ApiServiceAbstraction,
+      ConfigService,
+    ],
+  }),
+  safeProvider({
+    provide: LoginSuccessHandlerService,
+    useClass: DefaultLoginSuccessHandlerService,
+    deps: [SyncService, UserAsymmetricKeysRegenerationService],
   }),
 ];
 
