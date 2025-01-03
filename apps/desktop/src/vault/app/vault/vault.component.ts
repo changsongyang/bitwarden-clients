@@ -42,7 +42,7 @@ import { invokeMenu, RendererMenuItem } from "../../../utils";
 import { AddEditComponent } from "./add-edit.component";
 import { AttachmentsComponent } from "./attachments.component";
 import { CollectionsComponent } from "./collections.component";
-import { CredentialGeneratorComponent } from "./credential-generator.component";
+import { openCredentialGeneratorDialog } from "./credential-generator-dialog.component";
 import { FolderAddEditComponent } from "./folder-add-edit.component";
 import { PasswordHistoryComponent } from "./password-history.component";
 import { ShareComponent } from "./share.component";
@@ -631,25 +631,24 @@ export class VaultComponent implements OnInit, OnDestroy {
     );
 
     if (isGeneratorSwapEnabled) {
-      this.dialogService.open(CredentialGeneratorComponent, {
-        data: {
-          onCredentialGenerated: (value?: string) => {
-            if (this.addEditComponent != null) {
-              this.addEditComponent.markPasswordAsDirty();
-              if (passwordType) {
-                this.addEditComponent.cipher.login.password = value ?? "";
-              } else {
-                this.addEditComponent.cipher.login.username = value ?? "";
-              }
+      openCredentialGeneratorDialog(this.dialogService, {
+        onCredentialGenerated: (value?: string) => {
+          if (this.addEditComponent != null) {
+            this.addEditComponent.markPasswordAsDirty();
+            if (passwordType) {
+              this.addEditComponent.cipher.login.password = value ?? "";
+            } else {
+              this.addEditComponent.cipher.login.username = value ?? "";
             }
-          },
-          type: passwordType ? "password" : "username",
+          }
         },
+        type: passwordType ? "password" : "username",
       });
       return;
     }
 
-    // TODO: Remove this when new generator feature is enabled
+    // TODO: Legacy code below, remove once the new generator is fully implemented
+    // https://bitwarden.atlassian.net/browse/PM-7121
     const cipher = this.addEditComponent?.cipher;
     const loginType = cipher != null && cipher.type === CipherType.Login && cipher.login != null;
 

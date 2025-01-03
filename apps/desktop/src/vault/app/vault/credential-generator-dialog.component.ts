@@ -21,10 +21,19 @@ export type CredentialGeneratorParams = {
   type: "password" | "username";
 };
 
+export const openCredentialGeneratorDialog = (
+  dialogService: DialogService,
+  data: CredentialGeneratorParams,
+) => {
+  dialogService.open(CredentialGeneratorDialogComponent, {
+    data,
+  });
+};
+
 @Component({
   standalone: true,
-  selector: "credential-generator",
-  templateUrl: "credential-generator.component.html",
+  selector: "credential-generator-dialog",
+  templateUrl: "credential-generator-dialog.component.html",
   imports: [
     CipherFormGeneratorComponent,
     CommonModule,
@@ -36,7 +45,7 @@ export type CredentialGeneratorParams = {
     LinkModule,
   ],
 })
-export class CredentialGeneratorComponent {
+export class CredentialGeneratorDialogComponent {
   credentialValue?: string;
 
   constructor(
