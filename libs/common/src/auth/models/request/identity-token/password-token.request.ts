@@ -33,7 +33,7 @@ export class PasswordTokenRequest extends TokenRequest implements CaptchaProtect
     }
 
     if (this.deviceVerificationOtp) {
-      obj.append("deviceVerificationOtp", this.deviceVerificationOtp);
+      obj.deviceVerificationOtp = this.deviceVerificationOtp;
     }
 
     return obj;

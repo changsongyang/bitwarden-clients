@@ -11,7 +11,14 @@
     />
   </bit-form-field>
 
-  <button bitLink type="button" linkType="primary" (click)="requestOTP()" class="">
+  <button
+    bitLink
+    type="button"
+    linkType="primary"
+    (click)="requestOTP()"
+    [disabled]="disableRequestOTP"
+    class=""
+  >
     {{ "resendCode" | i18n }}
   </button>
 
