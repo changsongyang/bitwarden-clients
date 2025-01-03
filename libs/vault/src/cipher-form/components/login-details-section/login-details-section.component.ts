@@ -70,7 +70,8 @@ export class LoginDetailsSectionComponent implements OnInit {
    */
   get canCaptureTotp() {
     return (
-      this.totpCaptureService?.canCaptureTotp(window) && this.loginDetailsForm.controls.totp.enabled
+      !!this.totpCaptureService?.canCaptureTotp(window) &&
+      this.loginDetailsForm.controls.totp.enabled
     );
   }
 
