@@ -2,7 +2,7 @@ import { CdkVirtualScrollableElement } from "@angular/cdk/scrolling";
 import { inject, Injectable } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router } from "@angular/router";
-import { filter, Subscription } from "rxjs";
+import { filter, skip, Subscription } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -42,10 +42,14 @@ export class VaultPopupScrollPositionService {
 
     this.scrollSubscription?.unsubscribe();
 
-    this.scrollSubscription = virtualScrollElement?.elementScrolled().subscribe(() => {
-      const offset = virtualScrollElement.measureScrollOffset("top");
-      this.scrollPosition = offset;
-    });
+    // Skip the first scroll event to avoid settings the scroll from the above `scrollTo` call
+    this.scrollSubscription = virtualScrollElement
+      ?.elementScrolled()
+      .pipe(skip(1))
+      .subscribe(() => {
+        const offset = virtualScrollElement.measureScrollOffset("top");
+        this.scrollPosition = offset;
+      });
   }
 
   /** Stops the scroll listener from updating the stored location. */

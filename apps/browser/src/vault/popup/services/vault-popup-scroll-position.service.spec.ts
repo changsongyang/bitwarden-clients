@@ -121,6 +121,7 @@ describe("VaultPopupScrollPositionService", () => {
 
         service.start(virtualElement);
 
+        elementScrolled$.next(null); // first subscription is skipped by `skip(1)`
         elementScrolled$.next(null);
         tick();
 
