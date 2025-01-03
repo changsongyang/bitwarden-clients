@@ -178,6 +178,11 @@ export class ItemDetailsSectionComponent implements OnInit {
     return this.allowPersonalOwnership ? null : this.organizations[0].id;
   }
 
+  get defaultOrganizationId() {
+    const collectionId = this.initialValues?.collectionIds?.[0];
+    return this.collections.find((c) => c.id === collectionId)?.organizationId;
+  }
+
   async ngOnInit() {
     if (!this.allowPersonalOwnership && this.organizations.length === 0) {
       throw new Error("No organizations available for ownership.");
@@ -188,7 +193,8 @@ export class ItemDetailsSectionComponent implements OnInit {
     } else {
       this.itemDetailsForm.setValue({
         name: this.initialValues?.name || "",
-        organizationId: this.initialValues?.organizationId || this.defaultOwner,
+        organizationId:
+          this.initialValues?.organizationId || this.defaultOrganizationId || this.defaultOwner,
         folderId: this.initialValues?.folderId || null,
         collectionIds: [],
         favorite: false,
