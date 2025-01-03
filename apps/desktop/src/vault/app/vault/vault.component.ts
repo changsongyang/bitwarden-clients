@@ -42,7 +42,7 @@ import { invokeMenu, RendererMenuItem } from "../../../utils";
 import { AddEditComponent } from "./add-edit.component";
 import { AttachmentsComponent } from "./attachments.component";
 import { CollectionsComponent } from "./collections.component";
-import { openCredentialGeneratorDialog } from "./credential-generator-dialog.component";
+import { CredentialGeneratorDialogComponent } from "./credential-generator-dialog.component";
 import { FolderAddEditComponent } from "./folder-add-edit.component";
 import { PasswordHistoryComponent } from "./password-history.component";
 import { ShareComponent } from "./share.component";
@@ -631,7 +631,7 @@ export class VaultComponent implements OnInit, OnDestroy {
     );
 
     if (isGeneratorSwapEnabled) {
-      openCredentialGeneratorDialog(this.dialogService, {
+      CredentialGeneratorDialogComponent.open(this.dialogService, {
         onCredentialGenerated: (value?: string) => {
           if (this.addEditComponent != null) {
             this.addEditComponent.markPasswordAsDirty();

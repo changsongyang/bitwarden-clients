@@ -16,18 +16,9 @@ import {
 } from "@bitwarden/generator-components";
 import { CipherFormGeneratorComponent } from "@bitwarden/vault";
 
-export type CredentialGeneratorParams = {
+type CredentialGeneratorParams = {
   onCredentialGenerated: (value?: string) => void;
   type: "password" | "username";
-};
-
-export const openCredentialGeneratorDialog = (
-  dialogService: DialogService,
-  data: CredentialGeneratorParams,
-) => {
-  dialogService.open(CredentialGeneratorDialogComponent, {
-    data,
-  });
 };
 
 @Component({
@@ -68,5 +59,11 @@ export class CredentialGeneratorDialogComponent {
   openHistoryDialog = () => {
     // open history dialog
     this.dialogService.open(CredentialGeneratorHistoryDialogComponent);
+  };
+
+  static open = (dialogService: DialogService, data: CredentialGeneratorParams) => {
+    dialogService.open(CredentialGeneratorDialogComponent, {
+      data,
+    });
   };
 }
