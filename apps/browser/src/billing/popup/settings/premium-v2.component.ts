@@ -1,3 +1,5 @@
+// FIXME: Update this file to be type safe and remove this and next line
+// @ts-strict-ignore
 import { CommonModule, CurrencyPipe, Location } from "@angular/common";
 import { Component } from "@angular/core";
 import { RouterModule } from "@angular/router";
@@ -19,7 +21,6 @@ import {
   SectionComponent,
 } from "@bitwarden/components";
 
-import { CurrentAccountComponent } from "../../../auth/popup/account-switching/current-account.component";
 import { PopOutComponent } from "../../../platform/popup/components/pop-out.component";
 import { PopupHeaderComponent } from "../../../platform/popup/layout/popup-header.component";
 import { PopupPageComponent } from "../../../platform/popup/layout/popup-page.component";
@@ -32,7 +33,6 @@ import { PopupPageComponent } from "../../../platform/popup/layout/popup-page.co
     ButtonModule,
     CardComponent,
     CommonModule,
-    CurrentAccountComponent,
     ItemModule,
     JslibModule,
     PopupPageComponent,

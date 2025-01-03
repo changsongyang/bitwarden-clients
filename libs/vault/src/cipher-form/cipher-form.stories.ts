@@ -232,7 +232,7 @@ export const Edit: Story = {
     config: {
       ...defaultConfig,
       mode: "edit",
-      originalCipher: defaultConfig.originalCipher,
+      originalCipher: defaultConfig.originalCipher!,
     },
   },
 };
@@ -243,7 +243,7 @@ export const PartialEdit: Story = {
     config: {
       ...defaultConfig,
       mode: "partial-edit",
-      originalCipher: defaultConfig.originalCipher,
+      originalCipher: defaultConfig.originalCipher!,
     },
   },
 };
@@ -254,7 +254,7 @@ export const Clone: Story = {
     config: {
       ...defaultConfig,
       mode: "clone",
-      originalCipher: defaultConfig.originalCipher,
+      originalCipher: defaultConfig.originalCipher!,
     },
   },
 };
@@ -267,7 +267,7 @@ export const NoPersonalOwnership: Story = {
       mode: "add",
       allowPersonalOwnership: false,
       originalCipher: defaultConfig.originalCipher,
-      organizations: defaultConfig.organizations,
+      organizations: defaultConfig.organizations!,
     },
   },
 };

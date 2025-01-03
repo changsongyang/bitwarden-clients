@@ -1,3 +1,5 @@
+// FIXME: Update this file to be type safe and remove this and next line
+// @ts-strict-ignore
 import { DatePipe } from "@angular/common";
 import {
   ChangeDetectorRef,
@@ -77,6 +79,8 @@ export class ViewComponent implements OnDestroy, OnInit {
   private previousCipherId: string;
   private passwordReprompted = false;
 
+  private activeUserId$ = this.accountService.activeAccount$.pipe(map((a) => a?.id));
+
   get fido2CredentialCreationDateValue(): string {
     const dateCreated = this.i18nService.t("dateCreated");
     const creationDate = this.datePipe.transform(
@@ -138,6 +142,7 @@ export class ViewComponent implements OnDestroy, OnInit {
   async load() {
     this.cleanUp();
 
+    const activeUserId = await firstValueFrom(this.activeUserId$);
     // Grab individual cipher from `cipherViews$` for the most up-to-date information
     this.cipher = await firstValueFrom(
       this.cipherService.cipherViews$.pipe(
@@ -157,7 +162,7 @@ export class ViewComponent implements OnDestroy, OnInit {
 
     if (this.cipher.folderId) {
       this.folder = await (
-        await firstValueFrom(this.folderService.folderViews$)
+        await firstValueFrom(this.folderService.folderViews$(activeUserId))
       ).find((f) => f.id == this.cipher.folderId);
     }
 

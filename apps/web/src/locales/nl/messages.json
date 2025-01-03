@@ -29,6 +29,15 @@
   "notifiedMembers": {
     "message": "Geînformeerde leden"
   },
+  "revokeMembers": {
+    "message": "Leden intrekken"
+  },
+  "restoreMembers": {
+    "message": "Leden herstellen"
+  },
+  "cannotRestoreAccessError": {
+    "message": "Kan organisatietoegang niet herstellen"
+  },
   "allApplicationsWithCount": {
     "message": "Alle applicaties ($COUNT$)",
     "placeholders": {
@@ -984,6 +993,9 @@
   "loginWithDeviceEnabledNote": {
     "message": "Je moet Inloggen met apparaat instellen in de instellingen van de Bitwarden-app. Behoefte aan een andere mogelijkheid?"
   },
+  "needAnotherOptionV1": {
+    "message": "Nog een optie nodig?"
+  },
   "loginWithMasterPassword": {
     "message": "Inloggen met je hoofdwachtwoord"
   },
@@ -1106,6 +1118,12 @@
   },
   "logInToBitwarden": {
     "message": "Inloggen op Bitwarden"
+  },
+  "authenticationTimeout": {
+    "message": "Authenticatie-timeout"
+  },
+  "authenticationSessionTimedOut": {
+    "message": "De verificatiesessie is verlopen. Start het inlogproces opnieuw op."
   },
   "verifyIdentity": {
     "message": "Verify your Identity"
@@ -1301,6 +1319,12 @@
   },
   "notificationSentDevice": {
     "message": "Er is een bericht naar je apparaat verstuurd."
+  },
+  "aNotificationWasSentToYourDevice": {
+    "message": "Er is een melding naar je apparaat verzonden"
+  },
+  "makeSureYourAccountIsUnlockedAndTheFingerprintEtc": {
+    "message": "Zorg ervoor dat je kluis is ontgrendeld en de vingerafdrukzin hetzelfde is op het andere apparaat"
   },
   "versionNumber": {
     "message": "Versie $VERSION_NUMBER$",
@@ -1633,8 +1657,26 @@
   "passwordHistory": {
     "message": "Geschiedenis"
   },
+  "generatorHistory": {
+    "message": "Generatorgeschiedenis"
+  },
+  "clearGeneratorHistoryTitle": {
+    "message": "Generatorgeschiedenis wissen"
+  },
+  "cleargGeneratorHistoryDescription": {
+    "message": "Als je doorgaat, wis je definitief de geschiedenis van de generator. Weet je zeker dat je wilt doorgaan?"
+  },
   "noPasswordsInList": {
     "message": "Er zijn geen wachtwoorden om weer te geven."
+  },
+  "clearHistory": {
+    "message": "Geschiedenis wissen"
+  },
+  "nothingToShow": {
+    "message": "Niets weer te geven"
+  },
+  "nothingGeneratedRecently": {
+    "message": "Je hebt de laatste tijd niets gegenereerd"
   },
   "clear": {
     "message": "Wissen",
@@ -1758,8 +1800,8 @@
   "sessionsDeauthorized": {
     "message": "Autorisatie van alle sessies ingetrokken"
   },
-  "accountIsManagedMessage": {
-    "message": "Dit account wordt beheerd door $ORGANIZATIONNAME$",
+  "accountIsOwnedMessage": {
+    "message": "Dit account is eigendom van $ORGANIZATIONNAME$",
     "placeholders": {
       "organizationName": {
         "content": "$1",
@@ -3387,6 +3429,9 @@
       }
     }
   },
+  "viewAllLogInOptions": {
+    "message": "Alle inlogopties bekijken"
+  },
   "viewAllLoginOptions": {
     "message": "Alle loginopties bekijken"
   },
@@ -3837,33 +3882,36 @@
   "updateBrowser": {
     "message": "Webbrowser bijwerken"
   },
+  "generatingRiskInsights": {
+    "message": "Je risico-inzichten genereren..."
+  },
   "updateBrowserDesc": {
     "message": "Je maakt gebruik van webbrowser die we niet ondersteunen. De webkluis werkt mogelijk niet goed."
   },
-  "freeTrialEndPrompt": {
-    "message": "Je gratis proefperiode eindigt over $COUNT$ dagen. Om je abonnement te behouden,",
+  "freeTrialEndPromptCount": {
+    "message": "Je gratis proefperiode eindigt over $COUNT$ dagen.",
     "placeholders": {
       "count": {
-        "content": "$1",
-        "example": "You must set up 2FA on your user account before you can join this organization."
-      }
-    }
-  },
-  "freeTrialEndPromptAboveTwoDays": {
-    "message": "$ORGANIZATION$, je gratis proefperiode eindigt over $COUNT$ dagen. Om je abonnement te behouden,",
-    "placeholders": {
-      "count": {
-        "content": "$2",
-        "example": "organization name"
-      },
-      "organization": {
         "content": "$1",
         "example": "remaining days"
       }
     }
   },
-  "freeTrialEndPromptForOneDay": {
-    "message": "$ORGANIZATION$, je gratis proefperiode eindigt morgen. Om je abonnement te behouden,",
+  "freeTrialEndPromptMultipleDays": {
+    "message": "$ORGANIZATION$, je gratis proefperiode eindigt over $COUNT$ dagen.",
+    "placeholders": {
+      "count": {
+        "content": "$2",
+        "example": "remaining days"
+      },
+      "organization": {
+        "content": "$1",
+        "example": "organization name"
+      }
+    }
+  },
+  "freeTrialEndPromptTomorrow": {
+    "message": "$ORGANIZATION$, je gratis proefperiode eindigt morgen.",
     "placeholders": {
       "organization": {
         "content": "$1",
@@ -3871,11 +3919,11 @@
       }
     }
   },
-  "freeTrialEndPromptForOneDayNoOrgName": {
-    "message": "Je gratis proefperiode eindigt morgen. Om je abonnement te behouden,"
+  "freeTrialEndPromptTomorrowNoOrgName": {
+    "message": "Je gratis proefperiode eindigt morgen."
   },
-  "freeTrialEndPromptForLessThanADay": {
-    "message": "$ORGANIZATION$, je gratis proefperiode eindigt vandaag. Om je abonnement te behouden,",
+  "freeTrialEndPromptToday": {
+    "message": "$ORGANIZATION$, je gratis proefperiode eindigt vandaag.",
     "placeholders": {
       "organization": {
         "content": "$1",
@@ -3883,11 +3931,11 @@
       }
     }
   },
-  "freeTrialEndingSoonWithoutOrgName": {
-    "message": "Je gratis proefperiode eindigt vandaag. Om je abonnement te behouden,"
+  "freeTrialEndingTodayWithoutOrgName": {
+    "message": "Je gratis proefperiode eindigt vandaag."
   },
-  "routeToPaymentMethodTrigger": {
-    "message": "moet je een betaalmethode toevoegen."
+  "clickHereToAddPaymentMethod": {
+    "message": "Klik hier voor het toevoegen van een betaalmethode."
   },
   "joinOrganization": {
     "message": "Lid worden van organisatie"
@@ -4443,6 +4491,9 @@
     "message": "Vraag nooit om de vingerafdrukzin te controleren voor uitgenodigde leden (niet aanbevolen)",
     "description": "A 'fingerprint phrase' is a unique word phrase (similar to a passphrase) that a user can use to authenticate their public key with another user, for the purposes of sharing."
   },
+  "youWillBeNotifiedOnceTheRequestIsApproved": {
+    "message": "Je krijgt een melding zodra de aanvraag is goedgekeurd"
+  },
   "free": {
     "message": "Gratis",
     "description": "Free, as in 'Free beer'"
@@ -4672,6 +4723,12 @@
   },
   "ssoLogInWithOrgIdentifier": {
     "message": "Inloggen met het single sign-on portaal van je organisatie. Voer de identificatie van je organisatie in om te beginnen."
+  },
+  "singleSignOnEnterOrgIdentifier": {
+    "message": "Voer het SSO-nummer van je organisatie in om te beginnen"
+  },
+  "singleSignOnEnterOrgIdentifierText": {
+    "message": "Voer het SSO-nummer van je organisatie in om in te loggen met je SSO-provider. Mogelijk moet je het SSO-nummer invoeren als je op een nieuw apparaat inlogt."
   },
   "enterpriseSingleSignOn": {
     "message": "Enterprise Single Sign-On"
@@ -5577,6 +5634,12 @@
   "bulkFilteredMessage": {
     "message": "Uitgezonderd, niet van toepassing voor deze actie."
   },
+  "nonCompliantMembersTitle": {
+    "message": "Niet-conforme leden"
+  },
+  "nonCompliantMembersError": {
+    "message": "Leden die niet-conform zijn aan het enkele organisatie- of tweestapsaanmeldingsbeleid kunnen niet worden hersteld totdat ze voldoen aan de beleidsvereisten"
+  },
   "fingerprint": {
     "message": "Vingerafdruk"
   },
@@ -6084,9 +6147,6 @@
   "emailSent": {
     "message": "E-mail verzonden"
   },
-  "revokeSponsorshipConfirmation": {
-    "message": "Als je dit account verwijderd is de eigenaar van de Families-organisatie verantwoordelijk voor dit abonnement en de bijbehorende facturen. Weet je zeker dat je wilt doorgaan?"
-  },
   "removeSponsorshipSuccess": {
     "message": "Sponsoring verwijderd"
   },
@@ -6376,6 +6436,9 @@
   "idpSingleSignOnServiceUrlRequired": {
     "message": "Vereist als Entiteit ID geen URL is."
   },
+  "offerNoLongerValid": {
+    "message": "Deze aanbieding is niet langer geldig. Neem contact op met je organisatiebeheerders voor meer informatie."
+  },
   "openIdOptionalCustomizations": {
     "message": "Optionele aanpassingen"
   },
@@ -6468,8 +6531,8 @@
   "generateEmail": {
     "message": "E-mailadres genereren"
   },
-  "generatorBoundariesHint": {
-    "message": "Waarde moet tussen $MIN$ en $MAX$ liggen",
+  "spinboxBoundariesHint": {
+    "message": "Waarde moet tussen $MIN$ en $MAX$ liggen.",
     "description": "Explains spin box minimum and maximum values to the user",
     "placeholders": {
       "min": {
@@ -6479,6 +6542,26 @@
       "max": {
         "content": "$2",
         "example": "128"
+      }
+    }
+  },
+  "passwordLengthRecommendationHint": {
+    "message": " Gebruik $RECOMMENDED$ tekens of meer om een sterk wachtwoord te genereren.",
+    "description": "Appended to `spinboxBoundariesHint` to recommend a length to the user. This must include any language-specific 'sentence' separator characters (e.g. a space in english).",
+    "placeholders": {
+      "recommended": {
+        "content": "$1",
+        "example": "14"
+      }
+    }
+  },
+  "passphraseNumWordsRecommendationHint": {
+    "message": " Gebruik $RECOMMENDED$ woorden of meer om een sterke wachtwoordzin te genereren.",
+    "description": "Appended to `spinboxBoundariesHint` to recommend a number of words to the user. This must include any language-specific 'sentence' separator characters (e.g. a space in english).",
+    "placeholders": {
+      "recommended": {
+        "content": "$1",
+        "example": "6"
       }
     }
   },
@@ -6734,6 +6817,10 @@
   },
   "scimDescription": {
     "message": "Automatisch in gebruikers en groepen voorzien via SCIM-provisioning van je voorkeursprovider",
+    "description": "the text, 'SCIM', is an acronym and should not be translated."
+  },
+  "scimIntegrationDescription": {
+    "message": "Automatisch in gebruikers en groepen voorzien via SCIM-provisioning van je voorkeursprovider. Onderteunde integraties vinden",
     "description": "the text, 'SCIM', is an acronym and should not be translated."
   },
   "scimEnabledCheckboxDesc": {
@@ -8013,8 +8100,17 @@
   "loginInitiated": {
     "message": "Inloggen gestart"
   },
+  "rememberThisDeviceToMakeFutureLoginsSeamless": {
+    "message": "Onthoud dit apparaat om in het vervolg naadloos in te loggen"
+  },
   "deviceApprovalRequired": {
     "message": "Apparaattoestemming vereist. Kies een goedkeuringsoptie hieronder:"
+  },
+  "deviceApprovalRequiredV2": {
+    "message": "Toestemming apparaat vereist"
+  },
+  "selectAnApprovalOptionBelow": {
+    "message": "Kies hieronder een goedkeuringsoptie"
   },
   "rememberThisDevice": {
     "message": "Dit apparaat onthouden"
@@ -8245,6 +8341,9 @@
   "userEmailMissing": {
     "message": "Gebruikerse-mailadres ontbreekt"
   },
+  "activeUserEmailNotFoundLoggingYouOut": {
+    "message": "E-mailadres voor actieve gebruiker niet gevonden. Je wordt uitgelogd."
+  },
   "deviceTrusted": {
     "message": "Vertrouwd apparaat"
   },
@@ -8339,9 +8438,6 @@
   },
   "collectionManagementDesc": {
     "message": "Het gedrag van de collectie beheren voor de organisatie"
-  },
-  "limitCollectionCreationDeletionDesc": {
-    "message": "Aanmaken en verwijderen van collecties tot eigenaren en managers beperken"
   },
   "limitCollectionCreationDesc": {
     "message": "Aanmaken van collecties beperken tot eigenaren en managers"
@@ -8921,44 +9017,99 @@
   "sdksDesc": {
     "message": "Gebruik Bitwarden Secrets Manager SDK in de volgende programmeertalen om je eigen applicaties te bouwen."
   },
-  "setUpGithubActions": {
-    "message": "GitHub Actions instellen"
+  "ssoDescStart": {
+    "message": "Configureren",
+    "description": "This represents the beginning of a sentence, broken up to include links. The full sentence will be 'Configure single sign-on for Bitwarden using the implementation guide for your Identity Provider."
   },
-  "setUpKubernetes": {
-    "message": "Kubernetes inrichten"
+  "ssoDescEnd": {
+    "message": "voor Bitwarden met de implementatiehandleiding voor je Identity Provider.",
+    "description": "This represents the end of a sentence, broken up to include links. The full sentence will be 'Configure single sign-on for Bitwarden using the implementation guide for your Identity Provider."
   },
-  "setUpGitlabCICD": {
-    "message": "GitLab CI/CD instellen"
+  "userProvisioning": {
+    "message": "Gebruikersvoorziening"
   },
-  "setUpAnsible": {
-    "message": "Ansibel instellen"
+  "scimIntegration": {
+    "message": "SCIM"
   },
-  "rustSDKRepo": {
-    "message": "Ruby-repository bekijken"
+  "scimIntegrationDescStart": {
+    "message": "Configureren ",
+    "description": "This represents the beginning of a sentence, broken up to include links. The full sentence will be 'Configure SCIM (System for Cross-domain Identity Management) to automatically provision users and groups to Bitwarden using the implementation guide for your Identity Provider"
   },
-  "cSharpSDKRepo": {
-    "message": "C#-repository bekijken"
+  "scimIntegrationDescEnd": {
+    "message": "(Systeem voor Cross-domain Identity Management) om Bitwarden automatisch van gebruikers en groepen te voorzien met behulp van de implementatiehandleiding voor je Identity Provider.",
+    "description": "This represents the end of a sentence, broken up to include links. The full sentence will be 'Configure SCIM (System for Cross-domain Identity Management) to automatically provision users and groups to Bitwarden using the implementation guide for your Identity Provider"
   },
-  "cPlusPlusSDKRepo": {
-    "message": "C++-repository bekijken"
+  "bwdc": {
+    "message": "Bitwarden Directory Connector"
   },
-  "jsWebAssemblySDKRepo": {
-    "message": "JS WebAssembly-repository bekijken"
+  "bwdcDesc": {
+    "message": "Configureer Bitwarden Directory Connector om gebruikers en groepen automatisch te voorzien van het gebruik van de implementatiehandleiding voor jouw Identity Provider."
   },
-  "javaSDKRepo": {
-    "message": "Java-repository bekijken"
+  "eventManagement": {
+    "message": "Evenementbeheer"
   },
-  "pythonSDKRepo": {
-    "message": "Python-repository bekijken"
+  "eventManagementDesc": {
+    "message": "Integreer Bitwarden eventlogs met je SIEM (systeeminformatie en evenementbeheer)-systeem door gebruik te maken van de implementatiehandleiding voor je platform."
   },
-  "phpSDKRepo": {
-    "message": "Php-repository bekijken"
+  "deviceManagement": {
+    "message": "Apparaatbeheer"
   },
-  "rubySDKRepo": {
-    "message": "Ruby-repository bekijken"
+  "deviceManagementDesc": {
+    "message": "Apparaatbeheer voor Bitwarden configureren met behulp van de implementatiehandleiding voor jouw platform."
   },
-  "goSDKRepo": {
-    "message": "Go-repository bekijken"
+  "integrationCardTooltip": {
+    "message": "$INTEGRATION$ implementatiehandleiding openen.",
+    "placeholders": {
+      "integration": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "smIntegrationTooltip": {
+    "message": "$INTEGRATION$ configureren.",
+    "placeholders": {
+      "integration": {
+        "content": "$1",
+        "example": "Google"
+      }
+    }
+  },
+  "smSdkTooltip": {
+    "message": "$SDK$ repository weergeven",
+    "placeholders": {
+      "sdk": {
+        "content": "$1",
+        "example": "Rust"
+      }
+    }
+  },
+  "integrationCardAriaLabel": {
+    "message": "open $INTEGRATION$-implementatiehandleiding in een nieuwe tab.",
+    "placeholders": {
+      "integration": {
+        "content": "$1",
+        "example": "google"
+      }
+    }
+  },
+  "smSdkAriaLabel": {
+    "message": "$SDK$-repository in een nieuwe tab weergeven.",
+    "placeholders": {
+      "sdk": {
+        "content": "$1",
+        "example": "rust"
+      }
+    }
+  },
+  "smIntegrationCardAriaLabel": {
+    "message": "$INTEGRATION$-implementatiehandleiding in een nieuwe tab configureren.",
+    "placeholders": {
+      "integration": {
+        "content": "$1",
+        "example": "google"
+      }
+    }
   },
   "createNewClientToManageAsProvider": {
     "message": "Create a new client organization to manage as a Provider. Additional seats will be reflected in the next billing cycle."
@@ -9634,8 +9785,8 @@
   "selfHostingTitleProper": {
     "message": "Zelf hosten"
   },
-  "verified-domain-single-org-warning": {
-    "message": "Het verifiëren van een domein zal het enkelvoudig organisatiebeleid inschakelen."
+  "claim-domain-single-org-warning": {
+    "message": "Het verifiëren van een domein zal enkelvoudig organisatiebeleid inschakelen."
   },
   "single-org-revoked-user-warning": {
     "message": "Niet-conforme leden worden ingetrokken. Beheerders kunnen leden herstellen zodra ze alle andere organisaties verlaten."
@@ -9650,9 +9801,19 @@
       "description": "Title for the delete organization user dialog"
     }
   },
-  "deleteOrganizationUserWarning": {
-    "message": "Als je een lid verwijdert, verwijder je permanent hun Bitwarden-account en individuele kluisgegevens. Collectiegegevens blijven in de organisatie. Om het account te heractiveren, moet het lid een account aanmaken en opnieuw on-boarding doorlopen.",
-    "description": "Warning for the delete organization user dialog"
+  "deleteOrganizationUserWarningDesc": {
+    "message": "Dit verwijdert alle items in eigendom van $NAME$ permanent. Items in een collectie blijven buiten schot.",
+    "description": "Warning description for the delete organization user dialog",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "John Doe"
+      }
+    }
+  },
+  "deleteManyOrganizationUsersWarningDesc": {
+    "message": "Dit verwijdert alle items in eigendom van de volgende leden permanent. Items in een collectie blijven buiten schot.",
+    "description": "Warning description for the bulk delete organization users dialog"
   },
   "organizationUserDeleted": {
     "message": "$NAME$ verwijderd",
@@ -9707,5 +9868,144 @@
   },
   "deletedSuccessfully": {
     "message": "Succesvol verwijderd"
+  },
+  "freeFamiliesSponsorship": {
+    "message": "Gratis Bitwarden Families-sponsoring verwijderen"
+  },
+  "freeFamiliesSponsorshipPolicyDesc": {
+    "message": "Sta leden niet toe om een familieplan te verzilveren via deze organisatie."
+  },
+  "verifyBankAccountWithStatementDescriptorWarning": {
+    "message": "Betaling met een bankrekening is alleen beschikbaar voor klanten in de Verenigde Staten. Je moet je bankrekening verifiëren. We zullen binnen 1-2 werkdagen een microbetaling uitvoeren. Voer de code van het bankafschrift uit deze storting in op de factuurpagina van de organisatie om de bankrekening te verifiëren. Als de bankrekening niet wordt geverifieerd, wordt er een betaling gemist en wordt je abonnement opgeschort."
+  },
+  "verifyBankAccountWithStatementDescriptorInstructions": {
+    "message": "We hebben een microbetaling op je bankrekening gedaan (dit kan 1-2 werkdagen duren). Voer de zescijferige code van je bankafschrift in die begint met 'SM'. Als de bankrekening niet wordt geverifieerd, wordt er een betaling gemist en wordt je abonnement opgeschort."
+  },
+  "descriptorCode": {
+    "message": "Code bankafschrift"
+  },
+  "importantNotice": {
+    "message": "Belangrijke mededeling"
+  },
+  "setupTwoStepLogin": {
+    "message": "Tweestapsaanmelding instellen"
+  },
+  "newDeviceVerificationNoticeContentPage1": {
+    "message": "Vanaf februari 2025 stuurt Bitwarden een code naar het e-mailadres van je account om inloggen op nieuwe apparaten te verifiëren."
+  },
+  "newDeviceVerificationNoticeContentPage2": {
+    "message": "Je kunt tweestapsaanmelding instellen als een alternatieve manier om je account te beschermen of je e-mailadres te veranderen naar een waar je toegang toe hebt."
+  },
+  "remindMeLater": {
+    "message": "Herinner me later"
+  },
+  "newDeviceVerificationNoticePageOneFormContent": {
+    "message": "Heb je betrouwbare toegang tot je e-mail, $EMAIL$?",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "your_name@email.com"
+      }
+    }
+  },
+  "newDeviceVerificationNoticePageOneEmailAccessNo": {
+    "message": "Nee, dat heb ik niet"
+  },
+  "newDeviceVerificationNoticePageOneEmailAccessYes": {
+    "message": "Ja, ik heb betrouwbare toegang tot mijn e-mail"
+  },
+  "turnOnTwoStepLogin": {
+    "message": "Tweestapsaanmelding inschakelen"
+  },
+  "changeAcctEmail": {
+    "message": "E-mailadres van het account veranderen"
+  },
+  "removeMembers": {
+    "message": "Leden verwijderen"
+  },
+  "claimedDomains": {
+    "message": "Geverifieerde domeinen"
+  },
+  "claimDomain": {
+    "message": "Domein verifiëren"
+  },
+  "reclaimDomain": {
+    "message": "Domein opnieuw verifiëren"
+  },
+  "claimDomainNameInputHint": {
+    "message": "Voorbeeld: mijndomein.com. Subdomeinen moet je afzonderlijk verifiëren."
+  },
+  "automaticClaimedDomains": {
+    "message": "Automatisch geverifieerde domeinen"
+  },
+  "automaticDomainClaimProcess": {
+    "message": "Bitwarden probeert het domein gedurende de eerste 72 uur driemaal te verifiëren. Als het domein niet geverifieerd kan worden, controleer dan het DNS-record bij je host en verifieer handmatig. Het domein wordt binnen 7 dagen verwijderd uit je organisatie als het niet geverifieerd is."
+  },
+  "domainNotClaimed": {
+    "message": "$DOMAIN$ niet geverifieerd. Controleer je DNS-records.",
+    "placeholders": {
+      "DOMAIN": {
+        "content": "$1",
+        "example": "bitwarden.com"
+      }
+    }
+  },
+  "domainStatusClaimed": {
+    "message": "Geverifieerd"
+  },
+  "domainStatusUnderVerification": {
+    "message": "Gebruikersverificatie"
+  },
+  "claimedDomainsDesc": {
+    "message": "Verifieer een domein om eigenaar te worden van alle leden wiens e-mailadres overeenkomt met het domein. Leden kunnen de SSO-identificatie overslaan wanneer ze inloggen. Beheerders kunnen accounts van lelden verwijderen."
+  },
+  "invalidDomainNameClaimMessage": {
+    "message": "Invoer is geen geldig formaat. Formaat: mijndomein.com. Subdomeinen moet je afzonderlijk verifiëren."
+  },
+  "domainClaimedEvent": {
+    "message": "$DOMAIN$ geverifieerd",
+    "placeholders": {
+      "DOMAIN": {
+        "content": "$1",
+        "example": "bitwarden.com"
+      }
+    }
+  },
+  "domainNotClaimedEvent": {
+    "message": "$DOMAIN$ niet geverifieerd",
+    "placeholders": {
+      "DOMAIN": {
+        "content": "$1",
+        "example": "bitwarden.com"
+      }
+    }
+  },
+  "updatedRevokeSponsorshipConfirmationForSentSponsorship": {
+    "message": "Als je $EMAIL$ verwijdert, kun je de sponsoring voor dit Familie-plan niet gebruiken. Weet je zeker dat je door wilt gaan?",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "sponsored@organization.com"
+      }
+    }
+  },
+  "updatedRevokeSponsorshipConfirmationForAcceptedSponsorship": {
+    "message": "Als je $EMAIL$ verwijdert, eindigt de sponsoring voor dit Familie-plan en brengen we $DATE$ $40 + belasting in rekening. Je kunt geen nieuwe sponsoring inwisselen tot $DATE$. Weet je zeker dat u wilt doorgaan?",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "sponsored@organization.com"
+      },
+      "date": {
+        "content": "$2",
+        "example": "12/10/2024"
+      }
+    }
+  },
+  "domainClaimed": {
+    "message": "Domein geverifieerd"
+  },
+  "organizationNameMaxLength": {
+    "message": "Organisatienaam mag niet langer zijn dan 50 tekens."
   }
 }

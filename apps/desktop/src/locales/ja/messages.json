@@ -207,6 +207,21 @@
   "sshKeyGenerated": {
     "message": "A new SSH key was generated"
   },
+  "sshKeyWrongPassword": {
+    "message": "The password you entered is incorrect."
+  },
+  "importSshKey": {
+    "message": "Import"
+  },
+  "confirmSshKeyPassword": {
+    "message": "Confirm password"
+  },
+  "enterSshKeyPasswordDesc": {
+    "message": "Enter the password for the SSH key."
+  },
+  "enterSshKeyPassword": {
+    "message": "Enter password"
+  },
   "sshAgentUnlockRequired": {
     "message": "Please unlock your vault to approve the SSH key request."
   },
@@ -679,7 +694,7 @@
     "message": "組織に参加"
   },
   "joinOrganizationName": {
-    "message": "Join $ORGANIZATIONNAME$",
+    "message": "$ORGANIZATIONNAME$ に参加",
     "placeholders": {
       "organizationName": {
         "content": "$1",
@@ -903,6 +918,12 @@
   },
   "baseUrl": {
     "message": "サーバー URL"
+  },
+  "authenticationTimeout": {
+    "message": "Authentication timeout"
+  },
+  "authenticationSessionTimedOut": {
+    "message": "The authentication session timed out. Please restart the login process."
   },
   "selfHostBaseUrl": {
     "message": "Self-host server URL",
@@ -1371,12 +1392,30 @@
   "passwordHistory": {
     "message": "パスワードの履歴"
   },
+  "generatorHistory": {
+    "message": "Generator history"
+  },
+  "clearGeneratorHistoryTitle": {
+    "message": "Clear generator history"
+  },
+  "cleargGeneratorHistoryDescription": {
+    "message": "If you continue, all entries will be permanently deleted from generator's history. Are you sure you want to continue?"
+  },
   "clear": {
     "message": "消去する",
     "description": "To clear something out. example: To clear browser history."
   },
   "noPasswordsInList": {
     "message": "表示するパスワードがありません"
+  },
+  "clearHistory": {
+    "message": "Clear history"
+  },
+  "nothingToShow": {
+    "message": "Nothing to show"
+  },
+  "nothingGeneratedRecently": {
+    "message": "You haven't generated anything recently"
   },
   "undo": {
     "message": "元に戻す"
@@ -1694,9 +1733,6 @@
   },
   "windowsHelloConsentMessage": {
     "message": "Bitwarden の認証を行います。"
-  },
-  "polkitConsentMessage": {
-    "message": "認証して Bitwarden のロックを解除します。"
   },
   "unlockWithTouchId": {
     "message": "Touch ID でロック解除"
@@ -2444,8 +2480,8 @@
   "generateEmail": {
     "message": "Generate email"
   },
-  "generatorBoundariesHint": {
-    "message": "Value must be between $MIN$ and $MAX$",
+  "spinboxBoundariesHint": {
+    "message": "Value must be between $MIN$ and $MAX$.",
     "description": "Explains spin box minimum and maximum values to the user",
     "placeholders": {
       "min": {
@@ -2455,6 +2491,26 @@
       "max": {
         "content": "$2",
         "example": "128"
+      }
+    }
+  },
+  "passwordLengthRecommendationHint": {
+    "message": " Use $RECOMMENDED$ characters or more to generate a strong password.",
+    "description": "Appended to `spinboxBoundariesHint` to recommend a length to the user. This must include any language-specific 'sentence' separator characters (e.g. a space in english).",
+    "placeholders": {
+      "recommended": {
+        "content": "$1",
+        "example": "14"
+      }
+    }
+  },
+  "passphraseNumWordsRecommendationHint": {
+    "message": " Use $RECOMMENDED$ words or more to generate a strong passphrase.",
+    "description": "Appended to `spinboxBoundariesHint` to recommend a number of words to the user. This must include any language-specific 'sentence' separator characters (e.g. a space in english).",
+    "placeholders": {
+      "recommended": {
+        "content": "$1",
+        "example": "6"
       }
     }
   },
@@ -2669,14 +2725,29 @@
   "notificationSentDevice": {
     "message": "デバイスに通知を送信しました。"
   },
+  "aNotificationWasSentToYourDevice": {
+    "message": "A notification was sent to your device"
+  },
+  "makeSureYourAccountIsUnlockedAndTheFingerprintEtc": {
+    "message": "Make sure your account is unlocked and the fingerprint phrase matches on the other device"
+  },
+  "needAnotherOptionV1": {
+    "message": "Need another option?"
+  },
   "fingerprintMatchInfo": {
     "message": "保管庫がロックされていることと、パスフレーズが他のデバイスと一致していることを確認してください。"
   },
   "fingerprintPhraseHeader": {
     "message": "パスフレーズ"
   },
+  "youWillBeNotifiedOnceTheRequestIsApproved": {
+    "message": "You will be notified once the request is approved"
+  },
   "needAnotherOption": {
     "message": "Bitwarden アプリの設定でデバイスでログインする必要があります。別のオプションが必要ですか？"
+  },
+  "viewAllLogInOptions": {
+    "message": "View all log in options"
   },
   "viewAllLoginOptions": {
     "message": "すべてのログインオプションを表示"
@@ -2797,6 +2868,9 @@
   "checkForBreaches": {
     "message": "このパスワードの既知のデータ流出を確認"
   },
+  "loggedInExclamation": {
+    "message": "Logged in!"
+  },
   "important": {
     "message": "重要"
   },
@@ -2827,8 +2901,17 @@
   "windowsBiometricUpdateWarningTitle": {
     "message": "設定の更新を推奨"
   },
+  "rememberThisDeviceToMakeFutureLoginsSeamless": {
+    "message": "Remember this device to make future logins seamless"
+  },
   "deviceApprovalRequired": {
     "message": "デバイスの承認が必要です。以下から承認オプションを選択してください:"
+  },
+  "deviceApprovalRequiredV2": {
+    "message": "Device approval required"
+  },
+  "selectAnApprovalOptionBelow": {
+    "message": "Select an approval option below"
   },
   "rememberThisDevice": {
     "message": "このデバイスを記憶する"
@@ -2881,6 +2964,9 @@
   },
   "userEmailMissing": {
     "message": "ユーザーのメールアドレスがありません"
+  },
+  "activeUserEmailNotFoundLoggingYouOut": {
+    "message": "Active user email not found. Logging you out."
   },
   "deviceTrusted": {
     "message": "信頼されたデバイス"
@@ -3308,5 +3394,41 @@
   },
   "fileSavedToDevice": {
     "message": "ファイルをデバイスに保存しました。デバイスのダウンロードで管理できます。"
+  },
+  "importantNotice": {
+    "message": "Important notice"
+  },
+  "setupTwoStepLogin": {
+    "message": "Set up two-step login"
+  },
+  "newDeviceVerificationNoticeContentPage1": {
+    "message": "Bitwarden will send a code to your account email to verify logins from new devices starting in February 2025."
+  },
+  "newDeviceVerificationNoticeContentPage2": {
+    "message": "You can set up two-step login as an alternative way to protect your account or change your email to one you can access."
+  },
+  "remindMeLater": {
+    "message": "Remind me later"
+  },
+  "newDeviceVerificationNoticePageOneFormContent": {
+    "message": "Do you have reliable access to your email, $EMAIL$?",
+    "placeholders": {
+      "email": {
+        "content": "$1",
+        "example": "your_name@email.com"
+      }
+    }
+  },
+  "newDeviceVerificationNoticePageOneEmailAccessNo": {
+    "message": "No, I do not"
+  },
+  "newDeviceVerificationNoticePageOneEmailAccessYes": {
+    "message": "Yes, I can reliably access my email"
+  },
+  "turnOnTwoStepLogin": {
+    "message": "Turn on two-step login"
+  },
+  "changeAcctEmail": {
+    "message": "Change account email"
   }
 }

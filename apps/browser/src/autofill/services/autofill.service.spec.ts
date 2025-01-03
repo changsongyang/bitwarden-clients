@@ -143,7 +143,7 @@ describe("AutofillService", () => {
   });
 
   describe("collectPageDetailsFromTab$", () => {
-    const tab = mock<chrome.tabs.Tab>({ id: 1 });
+    const tab = mock<chrome.tabs.Tab>({ id: 1, url: "https://www.example.com" });
     const messages = new Subject<CollectPageDetailsResponseMessage>();
 
     function mockCollectPageDetailsResponseMessage(
@@ -165,11 +165,16 @@ describe("AutofillService", () => {
     it("sends a `collectPageDetails` message to the passed tab", () => {
       autofillService.collectPageDetailsFromTab$(tab);
 
-      expect(BrowserApi.tabSendMessage).toHaveBeenCalledWith(tab, {
-        command: AutofillMessageCommand.collectPageDetails,
-        sender: AutofillMessageSender.collectPageDetailsFromTabObservable,
+      expect(BrowserApi.tabSendMessage).toHaveBeenCalledWith(
         tab,
-      });
+        {
+          command: AutofillMessageCommand.collectPageDetails,
+          sender: AutofillMessageSender.collectPageDetailsFromTabObservable,
+          tab,
+        },
+        null,
+        true,
+      );
     });
 
     it("builds an array of page details from received `collectPageDetailsResponse` messages", async () => {
@@ -218,6 +223,41 @@ describe("AutofillService", () => {
 
       expect(tracker.emissions[1]).toBeUndefined();
     });
+
+    it("returns an empty array when the tab.url is empty", async () => {
+      const tracker = subscribeTo(autofillService.collectPageDetailsFromTab$({ ...tab, url: "" }));
+
+      await tracker.pauseUntilReceived(1);
+
+      expect(tracker.emissions[0]).toEqual([]);
+    });
+
+    it("returns an empty array when the `BrowserApi.tabSendMessage` throws an error", async () => {
+      (BrowserApi.tabSendMessage as jest.Mock).mockRejectedValueOnce(undefined);
+
+      const tracker = subscribeTo(autofillService.collectPageDetailsFromTab$(tab));
+
+      await tracker.pauseUntilReceived(1);
+
+      expect(tracker.emissions[0]).toEqual([]);
+    });
+
+    ["moz-extension://", "chrome-extension://", "safari-web-extension://"].forEach(
+      (extensionPrefix) => {
+        it(`returns an empty array when the tab.url starts with ${extensionPrefix}`, async () => {
+          const tracker = subscribeTo(
+            autofillService.collectPageDetailsFromTab$({
+              ...tab,
+              url: `${extensionPrefix}/3e42342/popup/index.html`,
+            }),
+          );
+
+          await tracker.pauseUntilReceived(1);
+
+          expect(tracker.emissions[0]).toEqual([]);
+        });
+      },
+    );
   });
 
   describe("loadAutofillScriptsOnInstall", () => {
@@ -2897,7 +2937,9 @@ describe("AutofillService", () => {
 
     const expectedDateFormats = [
       ["mm/yyyy", "05/2024"],
+      ["mm/YYYY", "05/2024"],
       ["mm/yy", "05/24"],
+      ["MM/YY", "05/24"],
       ["yyyy/mm", "2024/05"],
       ["yy/mm", "24/05"],
       ["mm-yyyy", "05-2024"],
@@ -2906,6 +2948,7 @@ describe("AutofillService", () => {
       ["yy-mm", "24-05"],
       ["yyyymm", "202405"],
       ["yymm", "2405"],
+      ["YYMM", "2405"],
       ["mmyyyy", "052024"],
       ["mmyy", "0524"],
     ];
@@ -3835,7 +3878,7 @@ describe("AutofillService", () => {
     });
 
     describe("given a autofill field value that indicates the field is a `select` input", () => {
-      it("will not add an autofil action to the fill script if the dataValue cannot be found in the select options", () => {
+      it("will not add an autofill action to the fill script if the dataValue cannot be found in the select options", () => {
         const dataValue = "username";
         const selectField = createAutofillFieldMock({
           opid: "username-field",

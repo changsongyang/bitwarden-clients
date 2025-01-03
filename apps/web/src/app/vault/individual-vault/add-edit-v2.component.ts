@@ -1,3 +1,5 @@
+// FIXME: Update this file to be type safe and remove this and next line
+// @ts-strict-ignore
 import { DIALOG_DATA, DialogConfig, DialogRef } from "@angular/cdk/dialog";
 import { CommonModule } from "@angular/common";
 import { Component, Inject, OnInit } from "@angular/core";
@@ -130,6 +132,8 @@ export class AddEditComponentV2 implements OnInit {
         return this.i18nService.t(partOne, this.i18nService.t("typeIdentity").toLowerCase());
       case CipherType.SecureNote:
         return this.i18nService.t(partOne, this.i18nService.t("note").toLowerCase());
+      case CipherType.SshKey:
+        return this.i18nService.t(partOne, this.i18nService.t("typeSshKey").toLowerCase());
     }
   }
 

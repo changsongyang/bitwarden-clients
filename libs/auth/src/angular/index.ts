@@ -24,6 +24,11 @@ export * from "./login/login-secondary-content.component";
 export * from "./login/login-component.service";
 export * from "./login/default-login-component.service";
 
+// login decryption options
+export * from "./login-decryption-options/login-decryption-options.component";
+export * from "./login-decryption-options/login-decryption-options.service";
+export * from "./login-decryption-options/default-login-decryption-options.service";
+
 // login via auth request
 export * from "./login-via-auth-request/login-via-auth-request.component";
 
@@ -59,5 +64,14 @@ export * from "./lock/lock-component.service";
 // vault timeout
 export * from "./vault-timeout-input/vault-timeout-input.component";
 
+// sso
+export * from "./sso/sso.component";
+export * from "./sso/sso-component.service";
+export * from "./sso/default-sso-component.service";
+
 // self hosted environment configuration dialog
 export * from "./self-hosted-env-config-dialog/self-hosted-env-config-dialog.component";
+
+// login approval
+export * from "./login-approval/login-approval.component";
+export * from "./login-approval/default-login-approval-component.service";
