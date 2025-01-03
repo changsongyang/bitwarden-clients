@@ -54,17 +54,45 @@ const DEFAULT_URI_MATCH_STRATEGY = new UserKeyDefinition(
   },
 );
 
+/**
+ * The Domain Settings service; provides client settings state for "active client view" URI concerns
+ */
 export abstract class DomainSettingsService {
+  /**
+   * Indicates if the favicons for ciphers' URIs should be shown instead of a placeholder
+   */
   showFavicons$: Observable<boolean>;
   setShowFavicons: (newValue: boolean) => Promise<void>;
+
+  /**
+   * User-specified URIs for which the client notifications should not appear
+   */
   neverDomains$: Observable<NeverDomains>;
   setNeverDomains: (newValue: NeverDomains) => Promise<void>;
+
+  /**
+   * User-specified URIs for which client content script injections should not occur, and the state
+   * of banner/notice visibility for those domains within the client
+   */
   blockedInteractionsUris$: Observable<NeverDomains>;
   setBlockedInteractionsUris: (newValue: NeverDomains) => Promise<void>;
+
+  /**
+   * URIs which should be treated as equivalent to each other for various concerns (autofill, etc)
+   */
   equivalentDomains$: Observable<EquivalentDomains>;
   setEquivalentDomains: (newValue: EquivalentDomains, userId: UserId) => Promise<void>;
+
+  /**
+   * User-specified default for URI-matching strategies (for example, when determining relevant
+   * ciphers for an active browser tab). Can be overridden by cipher-specific settings.
+   */
   defaultUriMatchStrategy$: Observable<UriMatchStrategySetting>;
   setDefaultUriMatchStrategy: (newValue: UriMatchStrategySetting) => Promise<void>;
+
+  /**
+   * Helper function for the common resolution of a given URL against equivalent domains
+   */
   getUrlEquivalentDomains: (url: string) => Observable<Set<string>>;
 }
 
