@@ -94,6 +94,8 @@ describe("OverlayBackground", () => {
   };
 
   beforeEach(() => {
+    configService = mock<ConfigService>();
+    configService.getFeatureFlag$.mockImplementation(() => of(true));
     domainSettingsService = new DefaultDomainSettingsService(fakeStateProvider, configService);
     activeAccountStatusMock$ = new BehaviorSubject(AuthenticationStatus.Unlocked);
     authService = mock<AuthService>();

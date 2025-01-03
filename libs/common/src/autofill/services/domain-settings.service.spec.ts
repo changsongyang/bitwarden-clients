@@ -11,10 +11,9 @@ import { DefaultDomainSettingsService, DomainSettingsService } from "./domain-se
 
 describe("DefaultDomainSettingsService", () => {
   let domainSettingsService: DomainSettingsService;
-  const configServiceMock = mock<ConfigService>();
+  let configService: MockProxy<ConfigService>;
   const mockUserId = Utils.newGuid() as UserId;
   const accountService: FakeAccountService = mockAccountServiceWith(mockUserId);
-  let mockConfigService: MockProxy<ConfigService>;
   const fakeStateProvider: FakeStateProvider = new FakeStateProvider(accountService);
 
   const mockEquivalentDomains = [
@@ -24,8 +23,9 @@ describe("DefaultDomainSettingsService", () => {
   ];
 
   beforeEach(() => {
-    domainSettingsService = new DefaultDomainSettingsService(fakeStateProvider, mockConfigService);
-    jest.spyOn(configServiceMock, "getFeatureFlag$").mockReturnValue(of(false));
+    configService = mock<ConfigService>();
+    configService.getFeatureFlag$.mockImplementation(() => of(false));
+    domainSettingsService = new DefaultDomainSettingsService(fakeStateProvider, configService);
 
     jest.spyOn(domainSettingsService, "getUrlEquivalentDomains");
     domainSettingsService.equivalentDomains$ = of(mockEquivalentDomains);

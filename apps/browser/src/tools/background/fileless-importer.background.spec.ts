@@ -1,5 +1,5 @@
 import { mock } from "jest-mock-extended";
-import { firstValueFrom, of } from "rxjs";
+import { of } from "rxjs";
 
 import { PolicyService } from "@bitwarden/common/admin-console/services/policy/policy.service";
 import { AuthenticationStatus } from "@bitwarden/common/auth/enums/authentication-status";
@@ -24,15 +24,6 @@ import { FilelessImportPort, FilelessImportType } from "../enums/fileless-import
 
 import FilelessImporterBackground from "./fileless-importer.background";
 
-jest.mock("rxjs", () => {
-  const rxjs = jest.requireActual("rxjs");
-  const { firstValueFrom } = rxjs;
-  return {
-    ...rxjs,
-    firstValueFrom: jest.fn(firstValueFrom),
-  };
-});
-
 describe("FilelessImporterBackground ", () => {
   let filelessImporterBackground: FilelessImporterBackground;
   const configService = mock<ConfigService>();
@@ -49,6 +40,7 @@ describe("FilelessImporterBackground ", () => {
 
   beforeEach(() => {
     domainSettingsService.blockedInteractionsUris$ = of(null);
+    policyService.policyAppliesToActiveUser$.mockImplementation(() => of(true));
     scriptInjectorService = new BrowserScriptInjectorService(
       domainSettingsService,
       platformUtilsService,
@@ -102,7 +94,6 @@ describe("FilelessImporterBackground ", () => {
     });
 
     it("posts a message to the port indicating that the fileless import feature is disabled if the user's auth status is not unlocked", async () => {
-      (firstValueFrom as jest.Mock).mockResolvedValue(false);
       jest.spyOn(authService, "getAuthStatus").mockResolvedValue(AuthenticationStatus.Locked);
 
       triggerRuntimeOnConnectEvent(lpImporterPort);
@@ -115,8 +106,6 @@ describe("FilelessImporterBackground ", () => {
     });
 
     it("posts a message to the port indicating that the fileless import feature is disabled if the user's policy removes individual vaults", async () => {
-      (firstValueFrom as jest.Mock).mockResolvedValue(true);
-
       triggerRuntimeOnConnectEvent(lpImporterPort);
       await flushPromises();
 
@@ -139,7 +128,8 @@ describe("FilelessImporterBackground ", () => {
     });
 
     it("posts a message to the port indicating that the fileless import feature is enabled", async () => {
-      (firstValueFrom as jest.Mock).mockResolvedValue(false);
+      policyService.policyAppliesToActiveUser$.mockImplementationOnce(() => of(false));
+
       triggerRuntimeOnConnectEvent(lpImporterPort);
       await flushPromises();
 
@@ -150,6 +140,7 @@ describe("FilelessImporterBackground ", () => {
     });
 
     it("triggers an injection of the `lp-suppress-import-download.js` script in manifest v3", async () => {
+      policyService.policyAppliesToActiveUser$.mockImplementationOnce(() => of(false));
       manifestVersionSpy.mockReturnValue(3);
 
       triggerRuntimeOnConnectEvent(lpImporterPort);
@@ -163,7 +154,7 @@ describe("FilelessImporterBackground ", () => {
     });
 
     it("triggers an injection of the `lp-suppress-import-download-script-append-mv2.js` script in manifest v2", async () => {
-      (firstValueFrom as jest.Mock).mockResolvedValueOnce(false);
+      policyService.policyAppliesToActiveUser$.mockImplementationOnce(() => of(false));
       manifestVersionSpy.mockReturnValue(2);
 
       triggerRuntimeOnConnectEvent(lpImporterPort);
@@ -182,9 +173,10 @@ describe("FilelessImporterBackground ", () => {
     let lpImporterPort: chrome.runtime.Port;
 
     beforeEach(async () => {
+      policyService.policyAppliesToActiveUser$.mockImplementation(() => of(false));
       jest.spyOn(authService, "getAuthStatus").mockResolvedValue(AuthenticationStatus.Unlocked);
       jest.spyOn(configService, "getFeatureFlag").mockResolvedValue(true);
-      (firstValueFrom as jest.Mock).mockResolvedValue(false);
+
       triggerRuntimeOnConnectEvent(createPortSpyMock(FilelessImportPort.NotificationBar));
       triggerRuntimeOnConnectEvent(createPortSpyMock(FilelessImportPort.LpImporter));
       await flushPromises();

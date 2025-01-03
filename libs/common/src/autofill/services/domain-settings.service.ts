@@ -99,7 +99,12 @@ export class DefaultDomainSettingsService implements DomainSettingsService {
 
     this.blockedInteractionsUris$ = this.configService
       .getFeatureFlag$(FeatureFlag.BlockBrowserInjectionsByDomain)
-      .pipe(switchMap((enabled) => (enabled ? this.blockedInteractionsUrisState.state$ : of({}))));
+      .pipe(
+        switchMap((featureIsEnabled) =>
+          featureIsEnabled ? this.blockedInteractionsUrisState.state$ : of({} as NeverDomains),
+        ),
+        map((disabledUris) => (Object.keys(disabledUris).length ? disabledUris : null)),
+      );
 
     this.equivalentDomainsState = this.stateProvider.getActive(EQUIVALENT_DOMAINS);
     this.equivalentDomains$ = this.equivalentDomainsState.state$.pipe(map((x) => x ?? null));
