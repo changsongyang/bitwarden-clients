@@ -1128,6 +1128,12 @@
   "verifyIdentity": {
     "message": "Verify your Identity"
   },
+  "whatIsADevice": {
+    "message": "What is a device?"
+  },
+  "aDeviceIs": {
+    "message": "A device is a unique installation of the Bitwarden app where you have logged in. Reinstalling, clearing app data, or clearing your cookies could result in a device appearing multiple times."
+  },
   "logInInitiated": {
     "message": "Log in initiated"
   },

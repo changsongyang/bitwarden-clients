@@ -9,7 +9,13 @@ import { DeviceView } from "@bitwarden/common/auth/abstractions/devices/views/de
 import { DeviceType, DeviceTypeMetadata } from "@bitwarden/common/enums";
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
 import { ValidationService } from "@bitwarden/common/platform/abstractions/validation.service";
-import { DialogService, ToastService, TableDataSource, TableModule } from "@bitwarden/components";
+import {
+  DialogService,
+  ToastService,
+  TableDataSource,
+  TableModule,
+  PopoverModule,
+} from "@bitwarden/components";
 
 import { SharedModule } from "../../../shared";
 
@@ -30,7 +36,7 @@ interface DeviceTableData {
   selector: "app-device-management",
   templateUrl: "./device-management.component.html",
   standalone: true,
-  imports: [CommonModule, SharedModule, TableModule],
+  imports: [CommonModule, SharedModule, TableModule, PopoverModule],
 })
 export class DeviceManagementComponent {
   protected readonly tableId = "device-management-table";
